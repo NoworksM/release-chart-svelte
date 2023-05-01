@@ -10,7 +10,7 @@
         <h1>{release.title}</h1>
         <div class="platforms">
             {#each release.platforms as platform (platform)}
-                <span>{platform}</span>
+                <img src={`/${platform}.svg`} alt={platform}/>
             {/each}
         </div>
     </div>
@@ -18,6 +18,7 @@
         <img src={`/games/${release.gameId}/poster`} alt={release.title} class="poster"/>
         <div class="info">
             <div class="release-info">
+                <!--TODO: Format for next and current year as MMM, dd-->
                 <h2>{release.releaseDate}</h2>
                 <div class="creators">
                     {#if release.developer === release.publisher}
@@ -66,11 +67,25 @@
     }
 
     .card .header .platforms {
-        @apply mr-1;
+        @apply flex flex-row;
+    }
+
+    .platforms img {
+        min-width: 20px;
+        max-width: 72px;
+        height: 20px;
+        object-fit: fill;
+        filter: invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
+    }
+
+    @media(prefers-color-scheme: dark) {
+        .platforms img {
+            filter: invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
+        }
     }
 
     .card .header .platforms > * {
-        @apply mr-1;
+        @apply mr-2;
     }
 
     h1 {
