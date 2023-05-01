@@ -1,0 +1,23 @@
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+textarea,
+select {
+    @apply bg-slate-100 dark:bg-slate-800;
+    @apply py-1 px-2 rounded-md;
+    @apply outline-offset-0 hover:outline-offset-0 active:outline-offset-0 focus-visible:outline-offset-0;
+    @apply outline-1 hover:outline-1 active:outline-1;
+    @apply border-none hover:border-none active:border-none focus-visible:border-none;
+    @apply outline-none hover:outline-none active:outline-none focus-visible:dark:outline-slate-600;
+    outline-offset: 0 !important;
+}
