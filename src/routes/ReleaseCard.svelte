@@ -72,7 +72,7 @@
 
     .platforms img {
         min-width: 20px;
-        max-width: 72px;
+        max-width: 64px;
         height: 20px;
         object-fit: fill;
         filter: invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
