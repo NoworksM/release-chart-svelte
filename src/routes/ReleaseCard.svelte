@@ -2,8 +2,10 @@
     import type {RegionalReleaseDto} from '../data/dto/regional-release-dto'
     import Chip from './Chip.svelte'
     import {DateTime} from 'luxon'
+    import type {PlatformDto} from '../data/dto/platform-dto'
 
     export let release: RegionalReleaseDto
+    export let platforms: PlatformDto[]
 
     const date = DateTime.fromISO(release.releaseDate)
 </script>
@@ -23,8 +25,15 @@
                 <div class="creators">{release.developer}</div>
             </div>
             <div class="platforms">
-                {#each release.platforms as platform (platform)}
-                    <img src={`/${platform}.svg`} alt={platform}/>
+                {#each release.platforms.map(p => {return {name: p, info: platforms.find(x => x.shortName === p)}}) as platform (platform.name)}
+                    {#if platform.info}
+                        <div class="platform">
+                            <span class="tooltip">{platform.info.name}</span>
+                            <img src={`/${platform.name}.svg`} alt={platform.info.name}/>
+                        </div>
+                    {:else}
+                        <img src={`/${platform.name}.svg`} alt={platform.name}/>
+                    {/if}
                 {/each}
             </div>
             <p class="description">{release.description}</p>
@@ -68,10 +77,22 @@
         @apply flex flex-row py-1;
     }
 
+    .tooltip {
+        @apply hidden rounded-md p-1 shadow-lg bg-slate-500 dark:bg-slate-700 relative top-0 left-0;
+    }
+
+    .platform:hover .tooltip {
+        @apply visible z-10;
+    }
+
+    .platforms .platform,
     .platforms img {
         min-width: 16px;
         max-width: 64px;
         height: 16px;
+    }
+
+    .platforms img {
         object-fit: fill;
         filter: brightness(0%) saturate(0%)  invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
     }

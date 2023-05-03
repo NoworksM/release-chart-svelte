@@ -1,8 +1,6 @@
 import {error} from '@sveltejs/kit'
 import type {RequestHandler} from './$types'
-import {getGame} from '../../../../data/access/games'
-import {ObjectId} from 'mongodb'
-import {filesCollection, imagesBucket, platformsCollection} from '../../../../data'
+import {platformsCollection} from '../../../../data'
 
 export const GET = (async ({params}) => {
     const platform = await platformsCollection.findOne({name: params.shortName})

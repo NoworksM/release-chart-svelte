@@ -5,4 +5,4 @@
     export let data: PageData
 </script>
 
-<ReleaseGrid releases={data.releases} />
+<ReleaseGrid releases={data.releases} platforms={data.platforms} />

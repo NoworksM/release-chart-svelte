@@ -1,13 +1,15 @@
 <script lang="ts">
     import ReleaseCard from './ReleaseCard.svelte'
     import type {RegionalReleaseDto} from '../data/dto/regional-release-dto'
+    import type {PlatformDto} from '../data/dto/platform-dto'
 
     export let releases: RegionalReleaseDto[]
+    export let platforms: PlatformDto[]
 </script>
 
 <div class="card-grid">
     {#each releases as release (`${release.id}:${release.releaseDate}:${release.regions.join(',')}${release.platforms.join(',')}`)}
-        <ReleaseCard {release} />
+        <ReleaseCard {release} platforms={platforms} />
     {/each}
 </div>
 
