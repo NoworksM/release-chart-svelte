@@ -73,12 +73,12 @@
         max-width: 64px;
         height: 16px;
         object-fit: fill;
-        filter: invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
+        filter: brightness(0%) saturate(0%)  invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
     }
 
     @media(prefers-color-scheme: dark) {
         .platforms img {
-            filter: invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
+            filter: brightness(0%) saturate(0%) invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
         }
     }
 
