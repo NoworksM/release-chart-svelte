@@ -20,21 +20,21 @@
             <div class="column">
                 <h4 class="text-xl mb-4">Game Info</h4>
                 <label>
-                    <span class="sr-only">Title</span>
+                    <span>Title</span>
                     <input name="title" bind:value={data.game.title} class="input" type="text" placeholder="Title"/>
                 </label>
                 <label>
-                    <span class="sr-only">Developer</span>
+                    <span>Developer</span>
                     <input name="developer" bind:value={data.game.developer} class="input" type="text"
                            placeholder="Developer"/>
                 </label>
                 <label>
-                    <span class="sr-only">Publisher</span>
+                    <span>Publisher</span>
                     <input name="publisher" bind:value={data.game.publisher} class="input" type="text"
                            placeholder="Publisher"/>
                 </label>
                 <label>
-                    <span class="sr-only">Title</span>
+                    <span>Title</span>
                     <textarea name="description" bind:value={data.game.description} class="input"
                               placeholder="Description"></textarea>
                 </label>
@@ -46,12 +46,12 @@
                     <div class="section">
                         <h5 class="text-lg mb-4">Release {idx + 1}</h5>
                         <label>
-                            <span class="sr-only">Release Date</span>
+                            <span>Release Date</span>
                             <input name={`releases[${idx}].releaseDate`} bind:value={release.releaseDate} type="date"
                                    class="input"/>
                         </label>
                         <label>
-                            <span class="sr-only">Platforms</span>
+                            <span>Platforms</span>
                             <select bind:value={release.platforms} class="input" multiple>
                                 {#each data.platforms as platform (platform.id)}
                                     <option value={platform.shortName}>{platform.name}</option>
@@ -59,7 +59,7 @@
                             </select>
                         </label>
                         <label>
-                            <span class="sr-only">Regions</span>
+                            <span>Regions</span>
                             <select bind:value={release.regions} class="input" multiple>
                                 {#each data.regions as region (region.id)}
                                     <option value={region.name}>{region.name}</option>
@@ -97,7 +97,8 @@
 
 <style lang="postcss">
     .column {
-        @apply flex flex-col w-96 m-4;
+        @apply flex flex-col m-4;
+        width: 450px;
     }
 
     .column .section {
@@ -118,7 +119,7 @@
 
     img {
         @apply w-full bg-slate-300 dark:bg-slate-800 rounded-md;
-        height: 500px;
-        object-fit: fill;
+        height: 600px;
+        object-fit: cover;
     }
 </style>

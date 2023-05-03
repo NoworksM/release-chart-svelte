@@ -1,33 +1,31 @@
 <script lang="ts">
     import type {RegionalReleaseDto} from '../data/dto/regional-release-dto'
     import Chip from './Chip.svelte'
+    import {DateTime} from 'luxon'
 
     export let release: RegionalReleaseDto
+
+    const date = DateTime.fromISO(release.releaseDate)
 </script>
 
 <div class="card">
     <div class="header">
         <h1>{release.title}</h1>
-        <div class="platforms">
-            {#each release.platforms as platform (platform)}
-                <img src={`/${platform}.svg`} alt={platform}/>
-            {/each}
-        </div>
     </div>
     <div class="body">
-        <img src={`/games/${release.gameId}/poster`} alt={release.title} class="poster"/>
+        <div class="poster-container">
+            <img src={`/games/${release.gameId}/poster`} alt={release.title} class="poster"/>
+        </div>
         <div class="info">
             <div class="release-info">
-                <!--TODO: Format for next and current year as MMM, dd-->
-                <h2>{release.releaseDate}</h2>
-                <div class="creators">
-                    {#if release.developer === release.publisher}
-                        <div class="dev">{release.developer}</div>
-                    {:else}
-                        <div class="dev">{release.developer}</div>
-                        <div class="pub">{release.publisher}</div>
-                    {/if}
-                </div>
+                <h2>{date.toFormat('MMM, dd')}</h2>
+
+                <div class="creators">{release.developer}</div>
+            </div>
+            <div class="platforms">
+                {#each release.platforms as platform (platform)}
+                    <img src={`/${platform}.svg`} alt={platform}/>
+                {/each}
             </div>
             <p class="description">{release.description}</p>
             <div class="genres">
@@ -66,14 +64,14 @@
         @apply bg-slate-500 dark:bg-slate-700 rounded-t-md flex flex-row justify-between items-center;
     }
 
-    .card .header .platforms {
-        @apply flex flex-row;
+    .platforms {
+        @apply flex flex-row py-1;
     }
 
     .platforms img {
-        min-width: 20px;
+        min-width: 16px;
         max-width: 64px;
-        height: 20px;
+        height: 16px;
         object-fit: fill;
         filter: invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
     }
@@ -84,38 +82,38 @@
         }
     }
 
-    .card .header .platforms > * {
+    .platforms img {
         @apply mr-2;
     }
 
     h1 {
-        @apply px-2 py-1;
+        @apply px-2 py-1 text-ellipsis overflow-hidden w-full flex-1 whitespace-nowrap;
+        font-size: 1.2rem;
     }
 
     .release-info {
-        @apply flex flex-row justify-between px-2;
+        @apply flex flex-row justify-between;
     }
 
     .release-info h2 {
-        @apply text-lg;
+        @apply text-2xl;
     }
 
-    .dev, .pub {
-        @apply text-right text-sm;
+    .creators {
+        @apply text-right text-sm text-ellipsis overflow-hidden whitespace-nowrap;
+    }
+
+    .description, .release-info, .platforms {
+        @apply px-2 py-1;
     }
 
     .description {
         @apply text-ellipsis overflow-hidden w-full flex-1 px-2 py-1;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     }
 
     .genres {
         @apply px-2 py-1 bg-slate-500 dark:bg-slate-700 rounded-br-md flex flex-row;
         @apply drop-shadow-md;
-    }
-
-    h1 {
-        font-size: 1.1rem;
-        font-weight: bold;
     }
 </style>
