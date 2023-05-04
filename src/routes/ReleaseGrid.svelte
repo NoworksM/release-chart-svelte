@@ -16,7 +16,14 @@
 <style lang="postcss">
     .card-grid {
         @apply justify-center m-8 grid gap-8;
-        grid-template-columns: repeat(auto-fill, 450px);
-        grid-template-rows: repeat(auto-fill, 335px);
+        grid-template-columns: repeat(auto-fill, minmax(250px, 350px));
+        grid-template-rows: repeat(auto-fill, 250px);
+    }
+
+    @media(min-width: 640px) {
+        .card-grid {
+            grid-template-rows: repeat(auto-fill, 335px);
+            grid-template-columns: repeat(auto-fill, 450px);;
+        }
     }
 </style>
