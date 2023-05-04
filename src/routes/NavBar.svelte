@@ -15,7 +15,6 @@
         <li><a href="/regions">Regions</a></li>
         <li><a href="/genres">Genres</a></li>
         <li><a href="/games">Games</a></li>
-        <li>{path}</li>
     </ul>
 </nav>
 <nav class="mobile">
