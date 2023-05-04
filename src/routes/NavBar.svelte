@@ -5,6 +5,9 @@
         <li><a href="/recent">Recent</a></li>
     </ul>
     <ul>
+        <li><a href="/platforms">Platforms</a></li>
+        <li><a href="/regions">Regions</a></li>
+        <li><a href="/genres">Genres</a></li>
         <li><a href="/games">Games</a></li>
     </ul>
 </nav>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import '../../styles/backgrounds.pcss'
+    import '../styles/backgrounds.pcss'
     import {createEventDispatcher} from 'svelte'
 
     const dispatch = createEventDispatcher()

@@ -1,7 +1,7 @@
 <script lang="ts">
     import '../../styles/buttons.pcss'
     import '../../styles/forms.pcss'
-    import PageSelector from './page-selector.svelte'
+    import PageSelector from '../PageSelector.svelte'
     import type {PageData} from './$types'
 
     let currentPage = 1
