@@ -33,6 +33,7 @@
 		"@types/lodash": "^4.14.194",
 		"@types/luxon": "^3.3.0",
 		"autoprefixer": "^10.4.14",
+		"cockatiel": "^3.1.1",
 		"dotenv": "^16.0.3",
 		"lodash": "^4.17.21",
 		"luxon": "^3.3.0",
@@ -41,6 +42,7 @@
 		"postcss": "^8.4.23",
 		"postcss-mixins": "^9.0.4",
 		"redis": "^4.6.6",
+		"sharp": "^0.32.1",
 		"tailwindcss": "^3.3.2",
 		"zod": "^3.21.4"
 	}

@@ -1,3 +1,4 @@
+import {env} from '$env/dynamic/private'
 import {GridFSBucket} from 'mongodb'
 import initializeMongoDb from './mongo'
 import type {Game} from './game'
