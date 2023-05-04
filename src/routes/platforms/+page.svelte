@@ -10,12 +10,10 @@
     <meta name="description" content="Release Chart Platforms"/>
 </svelte:head>
 
-<div class="flex justify-center">
-    <div class="grid">
-        {#each data.platforms as platform (platform.id)}
-            <PlatformCard platform={platform} releaseCount={data.releaseCounts[platform.shortName] ?? 0}/>
-        {/each}
-    </div>
+<div class="grid">
+    {#each data.platforms as platform (platform.id)}
+        <PlatformCard platform={platform} releaseCount={data.releaseCounts[platform.shortName] ?? 0}/>
+    {/each}
 </div>
 
 <style lang="postcss">
@@ -24,10 +22,10 @@
     }
 
     .grid {
-        @apply m-4 max-w-screen-2xl;
+        @apply m-4 justify-center;
         display: grid;
         grid-gap: 16px;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(56px, 1fr));
+        grid-template-rows: repeat(auto-fill, 64px);
     }
 </style>

@@ -1,10 +1,10 @@
 <nav>
     <ul>
         <li><a href="/">ReleaseChart</a></li>
-        <li><a href="/upcoming">Upcoming</a></li>
-        <li><a href="/recent">Recent</a></li>
+        <li><a href="/upcoming" class="hidden md:block">Upcoming</a></li>
+        <li><a href="/recent" class="hidden md:block">Recent</a></li>
     </ul>
-    <ul>
+    <ul class="admin">
         <li><a href="/platforms">Platforms</a></li>
         <li><a href="/regions">Regions</a></li>
         <li><a href="/genres">Genres</a></li>
@@ -17,8 +17,12 @@
         @apply bg-slate-800 text-slate-300 px-4 py-2 flex flex-row justify-between items-center drop-shadow-lg;
     }
 
-    nav ul {
+    nav ul:first-child {
         @apply flex flex-row;
+    }
+
+    nav ul.admin {
+        @apply hidden md:flex;
     }
 
     nav ul li {
