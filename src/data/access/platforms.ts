@@ -10,14 +10,14 @@ export async function getPlatforms() {
 export async function getPlatformsAsDto(): Promise<PlatformDto[]> {
     return await platformsCollection.aggregate<PlatformDto>([
         {$sort: {priority: -1, manufacturer: 1, name: 1}},
-        {$project: {_id: 0, id: {$toString: '$_id'}, name: 1, manufacturer: 1, shortName: 1, hasIcon: 1}}
+        {$project: {_id: 0, id: {$toString: '$_id'}, name: 1, manufacturer: 1, shortName: 1, hasIcon: 1, priority: 1}}
     ]).toArray()
 }
 
 export async function getPlatformAsDto(id: ObjectId): Promise<PlatformDto | undefined> {
     const platforms = await platformsCollection.aggregate<PlatformDto>([
         {$match: {_id: id}},
-        {$project: {_id: 0, id: {$toString: '$_id'}, name: 1, manufacturer: 1, shortName: 1, hasIcon: 1}}
+        {$project: {_id: 0, id: {$toString: '$_id'}, name: 1, manufacturer: 1, shortName: 1, hasIcon: 1, priority: 1}}
     ]).toArray()
 
     return platforms[0]

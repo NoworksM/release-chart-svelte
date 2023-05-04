@@ -11,14 +11,20 @@
     <meta name="description" content={`Edit Platform ${data.platform.name}`}/>
 </svelte:head>
 
-<form>
+<form method="post">
     <div class="info">
         <label for="name">Name</label>
         <input id="name" name="name" type="text" bind:value={data.platform.name} required/>
-        <label id="shortName" for="shortName">Short Name</label>
-        <input name="shortName" type="text" bind:value={data.platform.shortName} required/>
-        <label id="manufacturer" for="manufacturer">Manufacturer</label>
-        <input name="manufacturer" type="text" bind:value={data.platform.manufacturer} required/>
+        <label for="shortName">Short Name</label>
+        <input id="shortName" name="shortName" type="text" bind:value={data.platform.shortName} required/>
+        <label for="manufacturer">Manufacturer</label>
+        <input id="manufacturer" name="manufacturer" type="text" bind:value={data.platform.manufacturer} required/>
+        <label class="col-span-2">
+            Has Icon?
+            <input name="hasIcon" type="checkbox" bind:checked={data.platform.hasIcon}/>
+        </label>
+        <label for="priority">Priority</label>
+        <input id="priority" name="priority" type="number" min="0" bind:value={data.platform.priority}/>
     </div>
     <div class="column">
         {#if data.platform.hasIcon}
