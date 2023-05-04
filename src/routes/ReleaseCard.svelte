@@ -45,7 +45,7 @@
         display: grid;
         grid-template-columns: 4fr 5fr;
         grid-template-rows: auto auto auto auto 1fr auto;
-        height: 335px;
+        height: 250px;
         @apply rounded-md bg-slate-400 dark:bg-slate-800 text-slate-900 dark:text-slate-200 drop-shadow-md;;
     }
 
@@ -84,6 +84,10 @@
     }
 
     @media(min-width: 640px) {
+        .card {
+            height: 335px;
+        }
+
         .platforms .platform,
         .platforms img {
             min-width: 16px;
