@@ -18,10 +18,10 @@
     </ul>
 </nav>
 <nav class="mobile">
-    <a href="/" class:current={path === '/'}><img src="/home.svg" alt="Home"></a>
-    <a href="/upcoming" class:current={path === '/upcoming'}><img src="/upcoming.svg" alt="Upcoming"></a>
-    <a href="/recent" class:current={path === '/recent'}><img src="/recent.svg" alt="Recent"></a>
-    <a href="/month" class:current={path === '/month'}><img src="/month.svg" alt="This Month"></a>
+    <a href="/" class:current={path === '/'}><img src="/img/icons/home.svg" alt="Home"></a>
+    <a href="/upcoming" class:current={path === '/upcoming'}><img src="/img/icons/upcoming.svg" alt="Upcoming"></a>
+    <a href="/recent" class:current={path === '/recent'}><img src="/img/icons/recent.svg" alt="Recent"></a>
+    <a href="/month" class:current={path === '/month'}><img src="/img/icons/month.svg" alt="This Month"></a>
 </nav>
 
 <style lang="postcss">

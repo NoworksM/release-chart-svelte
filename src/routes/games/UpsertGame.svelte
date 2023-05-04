@@ -84,7 +84,7 @@
                     {#if game.posterId}
                         <img src={`/games/${game.id}/poster`} alt={`${game.title} Game Cover`} class="poster-image"/>
                     {:else}
-                        <img src="/add_photo.svg" alt="Upload Game Cover" class="placeholder"/>
+                        <img src="/img/icons/add_photo.svg" alt="Upload Game Cover" class="placeholder"/>
                     {/if}
                 </div>
                 <div class="section">

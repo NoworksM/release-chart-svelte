@@ -1,9 +1,10 @@
+import {env} from '$env/dynamic/private'
 import {gamesCollection} from '../index'
 import type {GameDto, GamePage} from '../dto/game-dto'
 import type {ObjectId} from 'mongodb'
 
 
-const pageSize = process.env.PAGE_SIZE ? parseInt(process.env.PAGE_SIZE) : 25
+const pageSize = env.PAGE_SIZE ? parseInt(env.PAGE_SIZE) : 25
 
 let checkedIndex = false
 

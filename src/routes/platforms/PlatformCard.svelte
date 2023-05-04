@@ -10,7 +10,7 @@
         {#if platform.hasIcon}
             <img src={`/${platform.shortName}.svg`} alt={platform.name}/>
         {:else}
-            <img src="/platform_placeholder.svg" alt={platform.name}/>
+            <img src="/img/platforms/placeholder.svg" alt={platform.name}/>
         {/if}
         <div class="flex-1">
             <h3>{platform.name}</h3>

@@ -6,7 +6,8 @@ import type {PlatformDto} from '../../../data/dto/platform-dto'
 // eslint-disable-next-line no-duplicate-imports
 import {PlatformDtoSchema} from '../../../data/dto/platform-dto'
 import {platformsCollection} from '../../../data'
-import {omit} from 'lodash'
+import _ from 'lodash'
+const {omit} = _
 
 interface EditPlatformPageData {
     platform: PlatformDto

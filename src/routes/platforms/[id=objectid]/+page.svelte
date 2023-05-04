@@ -30,7 +30,7 @@
         {#if data.platform.hasIcon}
             <img src={`/${data.platform.shortName}.svg`} alt="Logo"/>
         {:else}
-            <img src="/platform_placeholder.svg" alt="Logo"/>
+            <img src="/img/platforms/placeholder.svg" alt="Logo"/>
         {/if}
     </div>
     <div class="col-span-2 flex flex-row justify-end">

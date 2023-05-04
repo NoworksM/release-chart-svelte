@@ -25,7 +25,7 @@
         }) as platform (platform.name)}
             {#if platform.info}
                 <div class="platform">
-                    <img src={`/${platform.name}.svg`} alt={platform.info.name}/>
+                    <img src={`/img/platforms/${platform.name}.svg`} alt={platform.info.name}/>
                 </div>
             {:else}
                 <img src={`/${platform.name}.svg`} alt={platform.name}/>
