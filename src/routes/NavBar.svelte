@@ -1,3 +1,9 @@
+<script lang="ts">
+    import { page } from '$app/stores'
+
+    $: path = $page.url.pathname
+</script>
+
 <nav class="desktop">
     <ul>
         <li><a href="/">ReleaseChart</a></li>
@@ -9,13 +15,14 @@
         <li><a href="/regions">Regions</a></li>
         <li><a href="/genres">Genres</a></li>
         <li><a href="/games">Games</a></li>
+        <li>{path}</li>
     </ul>
 </nav>
 <nav class="mobile">
-    <a href="/"><img src="/home.svg" alt="Home"></a>
-    <a href="/upcoming"><img src="/upcoming.svg" alt="Upcoming"></a>
-    <a href="/recent"><img src="/recent.svg" alt="Recent"></a>
-    <a href="/month"><img src="/month.svg" alt="This Month"></a>
+    <a href="/" class:current={path === '/'}><img src="/home.svg" alt="Home"></a>
+    <a href="/upcoming" class:current={path === '/upcoming'}><img src="/upcoming.svg" alt="Upcoming"></a>
+    <a href="/recent" class:current={path === '/recent'}><img src="/recent.svg" alt="Recent"></a>
+    <a href="/month" class:current={path === '/month'}><img src="/month.svg" alt="This Month"></a>
 </nav>
 
 <style lang="postcss">
@@ -32,6 +39,10 @@
 
     nav.mobile img {
         filter: brightness(0%) saturate(0%) invert(48%) sepia(16%) saturate(576%) hue-rotate(176deg) brightness(90%) contrast(92%);
+    }
+
+    nav.mobile a.current img {
+        filter: brightness(0%) saturate(0%) invert(94%) sepia(8%) saturate(822%) hue-rotate(181deg) brightness(89%) contrast(99%);
     }
 
     nav ul {
