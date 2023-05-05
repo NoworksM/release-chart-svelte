@@ -1,5 +1,6 @@
 <script lang="ts">
     import type {PlatformDto} from '../../data/dto/platform-dto.js'
+    import {pathToPlatformIcon} from '../../data/platform'
 
     export let platform: PlatformDto
     export let releaseCount: number
@@ -7,11 +8,7 @@
 
 <a href={`/platforms/${platform.id}`}>
     <div class="platform">
-        {#if platform.hasIcon}
-            <img src={`/${platform.shortName}.svg`} alt={platform.name}/>
-        {:else}
-            <img src="/img/platforms/placeholder.svg" alt={platform.name}/>
-        {/if}
+        <img src={pathToPlatformIcon(platform, '/img/platforms/placeholder.svg')} alt={platform.name}/>
         <div class="flex-1">
             <h3>{platform.name}</h3>
             <p>{platform.manufacturer}</p>

@@ -3,6 +3,7 @@
     import Chip from './Chip.svelte'
     import {DateTime} from 'luxon'
     import type {PlatformDto} from '../data/dto/platform-dto'
+    import {pathToPlatformIcon} from '../data/platform'
 
     export let release: RegionalReleaseDto
     export let platforms: PlatformDto[]
@@ -25,10 +26,10 @@
         }) as platform (platform.name)}
             {#if platform.info}
                 <div class="platform">
-                    <img src={`/img/platforms/${platform.name}.svg`} alt={platform.info.name}/>
+                    <img src={pathToPlatformIcon(platform.info)} alt={platform.info.name}/>
                 </div>
             {:else}
-                <img src={`/${platform.name}.svg`} alt={platform.name}/>
+                <img src={`/img/platforms/${platform.name}.svg`} alt={platform.name}/>
             {/if}
         {/each}
     </div>
@@ -83,7 +84,7 @@
         height: 10px;
     }
 
-    @media(min-width: 640px) {
+    @media (min-width: 640px) {
         .card {
             height: 335px;
         }
@@ -99,10 +100,10 @@
     .platforms img {
         @apply mr-2;
         object-fit: fill;
-        filter: brightness(0%) saturate(0%)  invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
+        filter: brightness(0%) saturate(0%) invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
     }
 
-    @media(prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: dark) {
         .platforms img {
             filter: brightness(0%) saturate(0%) invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
         }
