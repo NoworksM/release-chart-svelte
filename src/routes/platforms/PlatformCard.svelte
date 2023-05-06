@@ -9,25 +9,26 @@
 <a href={`/platforms/${platform.id}`}>
     <div class="platform">
         <img src={pathToPlatformIcon(platform, '/img/platforms/placeholder.svg')} alt={platform.name}/>
-        <div class="flex-1">
-            <h3>{platform.name}</h3>
-            <p>{platform.manufacturer}</p>
-        </div>
+        <h3>{platform.name}</h3>
         <div class="count">{releaseCount}</div>
+        <p>{platform.manufacturer}</p>
     </div>
 </a>
 
 <style lang="postcss">
     .platform {
-        @apply flex flex-row rounded-md bg-slate-200 dark:bg-slate-800 p-2 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer;
+        @apply grid rounded-md bg-slate-200 dark:bg-slate-800 p-2 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer;
+        grid-template-columns: auto minmax(200px, 1fr) auto;
+        grid-template-rows: 1fr auto;
+        height: 64px;
     }
 
     .platform h3 {
-        @apply text-lg font-semibold;
+        @apply text-lg font-semibold text-ellipsis overflow-hidden whitespace-nowrap;
     }
 
     .count {
-        @apply text-2xl text-slate-500 dark:text-slate-400 align-baseline;
+        @apply text-2xl text-slate-500 dark:text-slate-400 align-baseline row-span-2;
     }
 
     .platform p {
@@ -35,7 +36,7 @@
     }
 
     .platform img {
-        @apply w-12 h-12 mr-4;
+        @apply w-12 h-12 mr-4 row-span-2;
         filter: brightness(0%) saturate(0%) invert(5%) sepia(15%) saturate(6058%) hue-rotate(199deg) brightness(99%) contrast(93%);
     }
 
