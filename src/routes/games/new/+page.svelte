@@ -3,6 +3,7 @@
     import UpsertGame from '../UpsertGame.svelte'
     import type {GameDto} from '../../../data/dto/game-dto'
     import type {ReleaseDto} from '../../../data/dto/release-dto'
+    import {DateTime} from 'luxon'
 
     export let data: PageData
 
@@ -12,9 +13,9 @@
         developer: '',
         publisher: '',
         releases: <ReleaseDto[]>[{
-            platform: '',
-            region: '',
-            date: ''
+            platforms: [],
+            regions: [],
+            releaseDate: DateTime.now().toFormat('yyyy-MM-dd')
         }],
         genres: <string[]>[],
     }

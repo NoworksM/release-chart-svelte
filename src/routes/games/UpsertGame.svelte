@@ -6,6 +6,7 @@
     import type {GameDto} from '../../data/dto/game-dto'
     import type {RegionDto} from '../../data/dto/region-dto'
     import type {PlatformDto} from '../../data/dto/platform-dto'
+    import {DateTime} from 'luxon'
 
     export let game: GameDto
     export let regions: RegionDto[]
@@ -13,7 +14,7 @@
     export let genres: GenreDto[]
 
     function addRelease() {
-        game.releases = [...game.releases, {releaseDate: '', platforms: [], regions: []}]
+        game.releases = [...game.releases, {releaseDate: DateTime.now().toFormat('yyyy-MM-dd'), platforms: [], regions: []}]
     }
 
     function removeRelease(idx: number) {
@@ -139,7 +140,7 @@
         @apply bg-slate-300 dark:bg-slate-800 rounded-md;
     }
 
-    img.poster-image {
+    img.poster-image, image.placeholder {
         object-fit: cover;
     }
 
