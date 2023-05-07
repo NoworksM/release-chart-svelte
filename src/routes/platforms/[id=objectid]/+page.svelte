@@ -2,6 +2,7 @@
     import type {PageData} from './$types'
     import '../../../styles/forms.pcss'
     import '../../../styles/buttons.pcss'
+    import {pathToPlatformIcon} from '../../../data/platform'
 
     export let data: PageData
 </script>
@@ -28,7 +29,7 @@
     </div>
     <div class="column">
         {#if data.platform.hasIcon}
-            <img src={`/${data.platform.shortName}.svg`} alt="Logo"/>
+            <img src={pathToPlatformIcon(data.platform)} alt="Logo"/>
         {:else}
             <img src="/img/platforms/placeholder.svg" alt="Logo"/>
         {/if}
