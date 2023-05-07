@@ -5,6 +5,7 @@ import type {RegionDto} from '../../../data/dto/region-dto'
 import type {PlatformDto} from '../../../data/dto/platform-dto'
 import type {GenreDto} from '../../../data/dto/genre-dto'
 import type {PageServerLoad, RouteParams} from '../../../../.svelte-kit/types/src/routes/games/[id=objectid]/$types'
+import upsertGame from '../UpsertGame.server'
 
 interface NewGamePageData {
     regions: RegionDto[],
@@ -27,4 +28,6 @@ export const load = (async ({params}: { params: RouteParams }): Promise<NewGameP
 }) satisfies PageServerLoad<NewGamePageData>
 
 
-export const actions = {}
+export const actions = {
+    default: upsertGame
+}

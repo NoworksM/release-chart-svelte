@@ -21,7 +21,7 @@
     }
 </script>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <div class="flex justify-center mt-6">
         <div class="flex flex-row">
             <div class="column">
@@ -47,7 +47,7 @@
                 </label>
                 <div class="flex flex-row justify-between mb-4">
                     <h4 class="text-2xl">Releases</h4>
-                    <button class="button primary" on:click={addRelease}>Add</button>
+                    <button class="button primary" on:click={() => addRelease()} type="button">Add</button>
                 </div>
                 {#each game.releases as release, idx (idx)}
                     <div class="section">
@@ -59,7 +59,7 @@
                         </label>
                         <label>
                             <span>Platforms</span>
-                            <select bind:value={release.platforms} class="input" multiple>
+                            <select name={`releases[${idx}].platforms`} bind:value={release.platforms} class="input" multiple>
                                 {#each platforms as platform (platform.id)}
                                     <option value={platform.shortName}>{platform.name}</option>
                                 {/each}
@@ -67,14 +67,14 @@
                         </label>
                         <label>
                             <span>Regions</span>
-                            <select bind:value={release.regions} class="input" multiple>
+                            <select name={`releases[${idx}].regions`} bind:value={release.regions} class="input" multiple>
                                 {#each regions as region (region.id)}
                                     <option value={region.name}>{region.name}</option>
                                 {/each}
                             </select>
                         </label>
                         <div class="flex flex-row justify-end">
-                            <button class="button danger" on:click={() => removeRelease(idx)}>Remove</button>
+                            <button class="button danger" on:click={() => removeRelease(idx)} type="button">Remove</button>
                         </div>
                     </div>
                 {/each}
@@ -82,7 +82,7 @@
             <div class="column">
                 <div class="section poster">
                     {#if game.posterId}
-                        <img src={`/games/${game.id}/poster`} alt={`${game.title} Game Cover`} class="poster-image"/>
+                        <img src={`/games/${game.id}/poster/large`} alt={`${game.title} Game Cover`} class="poster-image"/>
                     {:else}
                         <img src="/img/icons/add_photo.svg" alt="Upload Game Cover" class="placeholder"/>
                     {/if}
@@ -90,7 +90,7 @@
                 <div class="section">
                     <label>
                         <span class="sr-only">Genres</span>
-                        <select bind:value={game.genres} class="input" multiple>
+                        <select id="genres" name="genres" bind:value={game.genres} class="input" multiple>
                             {#each genres as genre (genre.name)}
                                 <option value={genre.name}>{genre.name}</option>
                             {/each}
@@ -100,11 +100,17 @@
             </div>
         </div>
     </div>
+    <div class="sticky-submit">
+        <div>
+            <p>Save pending changes?</p>
+            <input type="submit" value="Save" class="button info"/>
+        </div>
+    </div>
 </form>
 
 <style lang="postcss">
     .column {
-        @apply flex flex-col m-4;
+        @apply flex flex-col m-4 pb-16;
         width: 450px;
     }
 
@@ -145,5 +151,13 @@
         img.placeholder {
             filter: brightness(0%) saturate(0%) invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
         }
+    }
+
+    .sticky-submit {
+        @apply fixed bottom-0 w-full;
+    }
+
+    .sticky-submit div {
+        @apply flex flex-row w-[900px] mx-auto justify-between items-center my-4 p-4 bg-slate-300 dark:bg-slate-700 rounded-md drop-shadow-md;
     }
 </style>

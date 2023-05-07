@@ -25,4 +25,4 @@
     <meta name="description" content="Create a new game for Release Chart"/>
 </svelte:head>
 
-<UpsertGame game={game} regions={data.regions} platforms={data.platforms} genres={data.platforms}/>
+<UpsertGame game={game} regions={data.regions} platforms={data.platforms} genres={data.genres}/>

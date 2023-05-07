@@ -10,4 +10,4 @@
     <meta name="description" content="Release Chart: Edit Game - {data.game.title}" />
 </svelte.head>
 
-<UpsertGame game={data.game} regions={data.regions} platforms={data.platforms} genres={data.platforms} />
+<UpsertGame game={data.game} regions={data.regions} platforms={data.platforms} genres={data.genres} />
