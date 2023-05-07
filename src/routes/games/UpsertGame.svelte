@@ -13,6 +13,11 @@
     export let platforms: PlatformDto[]
     export let genres: GenreDto[]
 
+    let fileUpload: HTMLInputElement
+    let fileReader: FileReader | undefined
+    let uploadedFile: File | undefined
+    let uploadPreview: string | undefined
+
     function addRelease() {
         game.releases = [...game.releases, {releaseDate: DateTime.now().toFormat('yyyy-MM-dd'), platforms: [], regions: []}]
     }
@@ -20,6 +25,78 @@
     function removeRelease(idx: number) {
         game.releases = game.releases.filter((_, i) => i !== idx)
     }
+
+    function selectFile() {
+        fileUpload.click()
+    }
+
+    function onFileDrop(event: DragEvent) {
+        const dataTransfer = event.dataTransfer
+
+        if (dataTransfer.files.length === 0) {
+            return
+        }
+
+        fileUpload.files = dataTransfer.files
+
+        onFileChange(dataTransfer)
+    }
+    
+    function onFileChange(event: InputEvent | DataTransfer) {
+        let file: File
+        if (event['target']) {
+            const fileInput = (<InputEvent> event).target as HTMLInputElement
+
+            if (fileInput.files.length === 0 || !fileInput.files?.[0]) {
+                uploadPreview = undefined
+                return
+            }
+
+            file = fileInput.files?.[0]
+        } else {
+            const dataTransfer = <DataTransfer> event
+
+            if (dataTransfer.files.length === 0 || !dataTransfer.files[0]) {
+                uploadPreview = undefined
+                return
+            }
+
+            file = dataTransfer.files[0]
+        }
+
+        if (!fileReader) {
+            fileReader = new FileReader()
+        }
+
+        fileReader.addEventListener('load', () => {
+            if (fileReader?.result) {
+                uploadPreview = fileReader?.result as string
+            }
+
+            fileReader = undefined
+        })
+
+        fileReader.readAsDataURL(file)
+    }
+
+    // async function submitForm(event: SubmitEvent) {
+    //     const form = event.target as HTMLFormElement
+    //
+    //     const formData = new FormData(form)
+    //
+    //     if (uploadedFile) {
+    //         formData.set('poster', uploadedFile)
+    //     }
+    //
+    //     const res = await fetch(game.id ? `/games/${game.id}` : '/games/new', {
+    //         method: 'POST',
+    //         body: formData
+    //     })
+    //
+    //     if (res.ok) {
+    //         window.location.reload()
+    //     }
+    // }
 </script>
 
 <form method="POST" enctype="multipart/form-data">
@@ -83,10 +160,13 @@
             <div class="column">
                 <div class="section poster">
                     {#if game.posterId}
-                        <img src={`/games/${game.id}/poster/large`} alt={`${game.title} Game Cover`} class="poster-image"/>
+                        <img src={`/games/${game.id}/poster/large`} alt={`${game.title} Game Poster`} class="poster-image" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
+                    {:else if uploadPreview}
+                        <img src={uploadPreview} alt={`${game.title} Game Poster`} class="poster-image" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
                     {:else}
-                        <img src="/img/icons/add_photo.svg" alt="Upload Game Cover" class="placeholder"/>
+                        <img src="/img/icons/add_photo.svg" alt="Upload Game Poster" class="placeholder" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
                     {/if}
+                    <input name="poster" type="file" bind:this={fileUpload} on:change={onFileChange} />
                 </div>
                 <div class="section">
                     <label>
@@ -140,8 +220,12 @@
         @apply bg-slate-300 dark:bg-slate-800 rounded-md;
     }
 
-    img.poster-image, image.placeholder {
+    img.poster-image {
         object-fit: cover;
+    }
+
+    img.poster-image, img.placeholder {
+        @apply hover:cursor-pointer;
     }
 
     img.placeholder {
@@ -160,5 +244,9 @@
 
     .sticky-submit div {
         @apply flex flex-row w-[900px] mx-auto justify-between items-center my-4 p-4 bg-slate-300 dark:bg-slate-700 rounded-md drop-shadow-md;
+    }
+
+    input[type=file] {
+        @apply hidden;
     }
 </style>

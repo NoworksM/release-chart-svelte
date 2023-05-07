@@ -4,7 +4,7 @@ import type {RequestEvent as UpdateRequestEvent} from './[id=objectid]/$types'
 import type {GridFSFile} from 'mongodb'
 import {ObjectId} from 'mongodb'
 import {gamesCollection, imagesBucket} from '../../data'
-import {fail} from '@sveltejs/kit'
+import {fail, redirect} from '@sveltejs/kit'
 // eslint-disable-next-line no-duplicate-imports
 import {GameDtoSchema} from '../../data/dto/game-dto'
 import * as z from 'zod'
@@ -23,15 +23,13 @@ async function uploadPoster(poster: File) {
         ? poster.name.substring(winFakepathPrefix.length)
         : poster.name
 
-    const stream = (poster as Blob).stream()
+    const buffer = await (poster as Blob).arrayBuffer()
 
     const uploadStream = imagesBucket.openUploadStream(name, {
         contentType: poster.type
     })
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    await stream.pipeTo(uploadStream)
+    uploadStream.write(buffer as Buffer)
 
     return await new Promise<GridFSFile>((resolve, reject) => {
         uploadStream.end((err, file) => {
@@ -133,6 +131,6 @@ export default async function upsertGame({request, params}: NewRequestEvent | Up
         await gamesCollection.updateOne({_id: id}, {$set: data})
     } else {
         const inserted = await gamesCollection.insertOne(data)
-        return {id: inserted.insertedId.toString()}
+        throw redirect(303, `/games/${inserted.insertedId}`)
     }
 }
