@@ -1,5 +1,8 @@
 <script lang="ts">
     import { page } from '$app/stores'
+    import {DateTime} from 'luxon'
+
+    const now = DateTime.now()
 
     $: path = $page.url.pathname
 </script>
@@ -9,6 +12,7 @@
         <li><a href="/">ReleaseChart</a></li>
         <li><a href="/upcoming">Upcoming</a></li>
         <li><a href="/recent">Recent</a></li>
+        <li><a href={now.toFormat('/yyyy/MM')}>This Month</a></li>
     </ul>
     <ul>
         <li><a href="/platforms">Platforms</a></li>
