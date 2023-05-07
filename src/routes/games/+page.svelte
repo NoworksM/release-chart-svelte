@@ -3,10 +3,25 @@
     import '../../styles/forms.pcss'
     import PageSelector from '../PageSelector.svelte'
     import type {PageData} from './$types'
+    import type {GamePage} from '../../data/dto/game-dto'
+    import {writable} from 'svelte/store'
+    import {browser} from '$app/environment'
 
-    let currentPage = 1
-    let query = ''
+    let currentPage = writable(1)
+    let query = writable('')
     export let data: PageData
+    let gamePage: GamePage = data
+
+    async function loadGames() {
+        if (browser) {
+            const res = await fetch(`/api/games?page=${$currentPage}&q=${$query}`)
+
+            gamePage = await res.json() as GamePage
+        }
+    }
+
+    currentPage.subscribe(loadGames)
+    query.subscribe(loadGames)
 </script>
 
 <div class="flex justify-center w-full">
@@ -15,8 +30,8 @@
             <a href="/games/new" class="button primary">New</a>
         </div>
         <div class="flex flex-row justify-between items-center mb-4">
-            <PageSelector bind:currentPage={currentPage} pages={data.pages}/>
-            <input type="search" bind:value={query}/>
+            <PageSelector bind:currentPage={$currentPage} pages={gamePage.pages}/>
+            <input type="search" bind:value={$query}/>
         </div>
         <table class="w-full table-fill">
             <thead class="border-b font-medium dark:border-slate-500">
@@ -28,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-                {#each data.data as game}
+                {#each gamePage.data as game (game.id)}
                     <tr class="h-12 border-b dark:border-slate-500">
                         <td>{game.title}</td>
                         <td>{game.developer}</td>
