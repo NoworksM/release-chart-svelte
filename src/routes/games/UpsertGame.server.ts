@@ -102,7 +102,7 @@ export default async function upsertGame({request, params}: NewRequestEvent | Up
     const body = bodyResult.data
 
     let posterFile: GridFSFile | undefined
-    if (body.poster) {
+    if (body.poster && body.poster.name !== 'undefined') {
         posterFile = await uploadPoster(body.poster)
     }
 

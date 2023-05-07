@@ -15,7 +15,6 @@
 
     let fileUpload: HTMLInputElement
     let fileReader: FileReader | undefined
-    let uploadedFile: File | undefined
     let uploadPreview: string | undefined
 
     function addRelease() {
@@ -52,7 +51,7 @@
                 return
             }
 
-            file = fileInput.files?.[0]
+            file = <File>fileInput.files?.[0]
         } else {
             const dataTransfer = <DataTransfer> event
 
@@ -159,10 +158,10 @@
             </div>
             <div class="column">
                 <div class="section poster">
-                    {#if game.posterId}
-                        <img src={`/games/${game.id}/poster/large`} alt={`${game.title} Game Poster`} class="poster-image" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
-                    {:else if uploadPreview}
+                    {#if uploadPreview}
                         <img src={uploadPreview} alt={`${game.title} Game Poster`} class="poster-image" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
+                    {:else if game.posterId}
+                        <img src={`/games/${game.id}/poster/large`} alt={`${game.title} Game Poster`} class="poster-image" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
                     {:else}
                         <img src="/img/icons/add_photo.svg" alt="Upload Game Poster" class="placeholder" on:click={selectFile} on:keypress={selectFile} on:drop|preventDefault={onFileDrop} on:dragover|preventDefault/>
                     {/if}
