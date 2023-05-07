@@ -60,6 +60,11 @@ export const GET = (async ({params}) => {
         fs.on('end', () => {
             const buffer = Buffer.concat(buffers)
 
+            if (buffer.length === 0) {
+                reject(error(500, 'Invalid Image Data'))
+                return
+            }
+
             sharp(buffer)
                 .resize(450, 600, {fit: 'cover'})
                 .webp({quality: 75})
