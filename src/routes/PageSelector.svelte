@@ -22,7 +22,7 @@
     {#each {length: pages} as _, i}
         <button class="bg-primary" on:click={() => selectPage(i + 1)}>{i + 1}</button>
     {/each}
-    {#if currentPage < pages - 1 && pages > 1}
+    {#if currentPage < pages && pages > 1}
         <button class="bg-primary" on:click={() => selectPage(currentPage + 1)}>&gt;</button>
     {:else}
         <div class="bg-primary">&gt;</div>
