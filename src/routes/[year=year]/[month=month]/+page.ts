@@ -10,6 +10,8 @@ export const load = (async ({params, fetch}: PageLoadEvent) => {
 
     return {
         releases: releases as RegionalReleaseDto[],
-        platforms: platforms as PlatformDto[]
+        platforms: platforms as PlatformDto[],
+        year: parseInt(params.year),
+        month: parseInt(params.month)
     }
 }) satisfies PageLoad
