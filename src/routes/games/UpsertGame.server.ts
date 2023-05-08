@@ -119,7 +119,7 @@ export default async function upsertGame({request, params}: NewRequestEvent | Up
         updatedAt: now
     }
 
-    if (id) {
+    if (!id) {
         data.createdAt = now
     }
 
