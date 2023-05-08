@@ -11,6 +11,6 @@
     <meta name="description" content="A list of upcoming game releases, including release dates, platforms, and more.">
 </svelte:head>
 
-<MonthPicker currentYear={data.year} currentMonth={data.month} startYear={2018} endYear={2023}/>
+<MonthPicker currentYear={data.year} currentMonth={data.month} startYear={data.yearRange.min} endYear={data.yearRange.max}/>
 
 <ReleaseGrid releases={data.releases} platforms={data.platforms}/>
