@@ -113,6 +113,10 @@
         @apply px-2 py-1;
     }
 
+    .creators {
+        @apply text-ellipsis overflow-hidden whitespace-nowrap;
+    }
+
     .description {
         @apply text-ellipsis overflow-hidden w-full flex-1 px-2 py-1;
         font-size: 0.7rem;
