@@ -24,6 +24,10 @@
     query.subscribe(loadGames)
 </script>
 
+<svelte:head>
+    <title>RCAdmin: Games</title>
+</svelte:head>
+
 <div class="flex justify-center w-full">
     <div class="max-w-screen-2xl w-full mt-4">
         <div class="flex justify-end max-w mb-4">

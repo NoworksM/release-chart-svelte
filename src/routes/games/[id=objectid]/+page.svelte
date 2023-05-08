@@ -5,9 +5,9 @@
     export let data: PageData
 </script>
 
-<svelte.head>
+<svelte:head>
     <title>RCAdmin: Edit {data.game.title}</title>
     <meta name="description" content="Release Chart: Edit Game - {data.game.title}" />
-</svelte.head>
+</svelte:head>
 
 <UpsertGame game={data.game} regions={data.regions} platforms={data.platforms} genres={data.genres} />
