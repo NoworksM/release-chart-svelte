@@ -1,12 +1,13 @@
 import type {PageServerLoad, RequestEvent, RouteParams} from './$types'
 import {getPlatformAsDto} from '$lib/server/data/access/platforms'
-import {error, fail} from '@sveltejs/kit'
+import {error, fail, redirect} from '@sveltejs/kit'
 import {ObjectId} from 'mongodb'
 import type {PlatformDto} from '$lib/data/platform'
 // eslint-disable-next-line no-duplicate-imports
 import {PlatformDtoSchema} from '$lib/data/platform'
 import {platformsCollection} from '$lib/server/data'
 import _ from 'lodash'
+import {env} from '$env/dynamic/private'
 const {omit} = _
 
 interface EditPlatformPageData {
@@ -40,7 +41,7 @@ async function savePlatform({ request, params }: RequestEvent) {
 
     await platformsCollection.updateOne({_id: new ObjectId(params.id)}, update)
 
-    return {success: true}
+    throw redirect(303, `${env.BASE_URL}/platforms`)
 }
 
 export const actions = {

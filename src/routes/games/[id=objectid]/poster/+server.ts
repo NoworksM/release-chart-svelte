@@ -49,51 +49,56 @@ export const GET = (async ({params}) => {
     }
 
 
-    const buffer = await new Promise<Buffer>((resolve, reject) => {
-        const fs = imagesBucket.openDownloadStream(file._id)
+    try {
+        const buffer = await new Promise<Buffer>((resolve, reject) => {
+            const fs = imagesBucket.openDownloadStream(file._id)
 
-        const buffers: Buffer[] = []
-        fs.on('data', (data) => {
-            buffers.push(data)
+            const buffers: Buffer[] = []
+            fs.on('data', (data) => {
+                buffers.push(data)
+            })
+
+            fs.on('end', () => {
+                const buffer = Buffer.concat(buffers)
+
+                if (buffer.length === 0) {
+                    reject(error(500, 'Invalid Image Data'))
+                    return
+                }
+
+                sharp(buffer)
+                    .resize(200, 300, {fit: 'cover'})
+                    .webp({quality: 75})
+                    .toBuffer()
+                    .then((resizedBuffer) => {
+                        if (redis) {
+                            Promise.all([
+                                redis.hSet(cacheKey, 'contentType', Buffer.from('image/webp')),
+                                redis.hSet(cacheKey, 'data', resizedBuffer)
+                            ])
+                                .then(() => {
+                                    resolve(resizedBuffer)
+                                })
+                                .catch(() => {
+                                    resolve(resizedBuffer)
+                                })
+                        } else {
+                            resolve(resizedBuffer)
+                        }
+                    })
+                    .catch(err => reject(err))
+            })
+
+            fs.on('error', reject)
         })
 
-        fs.on('end', () => {
-            const buffer = Buffer.concat(buffers)
-
-            if (buffer.length === 0) {
-                reject(error(500, 'Invalid Image Data'))
-                return
+        return new Response(buffer, {
+            headers: {
+                'Content-Type': 'image/webp',
+                'Cache-Control': `maxage=${env.CACHE_MAX_AGE}, stale-while-revalidate=${env.CACHE_SWR_AGE}`
             }
-
-            sharp(buffer)
-                .resize(200, 300, {fit: 'cover'})
-                .webp({quality: 75})
-                .toBuffer()
-                .then((resizedBuffer) => {
-                    if (redis) {
-                        Promise.all([
-                            redis.hSet(cacheKey, 'contentType', Buffer.from('image/webp')),
-                            redis.hSet(cacheKey, 'data', resizedBuffer)
-                        ])
-                            .then(() => {
-                                resolve(resizedBuffer)
-                            })
-                            .catch(() => {
-                                resolve(resizedBuffer)
-                            })
-                    } else {
-                        resolve(resizedBuffer)
-                    }
-                })
         })
-
-        fs.on('error', reject)
-    })
-
-    return new Response(buffer, {
-        headers: {
-            'Content-Type': 'image/webp',
-            'Cache-Control': `maxage=${env.CACHE_MAX_AGE}, stale-while-revalidate=${env.CACHE_SWR_AGE}`
-        }
-    })
+    } catch {
+        return new Response(null, {status: 500})
+    }
 }) satisfies RequestHandler
