@@ -1,4 +1,3 @@
-import {env} from '$env/dynamic/private'
 import {GridFSBucket} from 'mongodb'
 import initializeMongoDb from './mongo'
 import type {Game} from './game'
@@ -6,6 +5,7 @@ import type Region from './region'
 import type Platform from './platform'
 import type Genre from './genre'
 import type UserInfo from './user-info'
+import type Session from './session'
 
 const {client, db, mongoClientPromise} = initializeMongoDb()
 
@@ -18,6 +18,8 @@ const filesCollection = db.collection('fs.files')
 
 const userInfoCollection = db.collection<UserInfo>('userInfo')
 
+const sessionCollection = db.collection<Session>('sessions')
+
 const imagesBucket = new GridFSBucket(db)
 
 export {
@@ -28,6 +30,7 @@ export {
     filesCollection,
     genresCollection,
     userInfoCollection,
+    sessionCollection,
     imagesBucket,
     mongoClientPromise
 }

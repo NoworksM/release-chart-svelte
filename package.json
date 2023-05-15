@@ -32,6 +32,7 @@
 		"@sveltejs/adapter-node": "^1.2.4",
 		"@types/lodash": "^4.14.194",
 		"@types/luxon": "^3.3.0",
+		"argon2": "^0.30.3",
 		"autoprefixer": "^10.4.14",
 		"cockatiel": "^3.1.1",
 		"dotenv": "^16.0.3",

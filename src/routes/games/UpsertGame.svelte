@@ -43,7 +43,7 @@
     
     function onFileChange(event: InputEvent | DataTransfer) {
         let file: File
-        if (event['target']) {
+        if ('target' in event) {
             const fileInput = (<InputEvent> event).target as HTMLInputElement
 
             if (fileInput.files.length === 0 || !fileInput.files?.[0]) {
