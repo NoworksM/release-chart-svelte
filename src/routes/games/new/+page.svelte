@@ -1,8 +1,8 @@
 <script lang="ts">
     import type {PageData} from './$types'
     import UpsertGame from '../UpsertGame.svelte'
-    import type {GameDto} from '../../../data/dto/game-dto'
-    import type {ReleaseDto} from '../../../data/dto/release-dto'
+    import type {GameDto} from '$lib/data/game'
+    import type {ReleaseDto} from '$lib/data/release'
     import {DateTime} from 'luxon'
 
     export let data: PageData

@@ -1,5 +1,5 @@
 import type {ObjectId} from 'mongodb'
-import type {RegionalReleaseDto} from '../../data/dto/regional-release-dto'
+import type {RegionalReleaseDto} from '$lib/data/regional-release'
 
 
 export interface RegionalRelease {

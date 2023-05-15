@@ -2,10 +2,10 @@
     import '../../styles/forms.pcss'
     import '../../styles/buttons.pcss'
 
-    import type {GenreDto} from '../../data/dto/genre-dto'
-    import type {GameDto} from '../../data/dto/game-dto'
-    import type {RegionDto} from '../../data/dto/region-dto'
-    import type {PlatformDto} from '../../data/dto/platform-dto'
+    import type {GenreDto} from '$lib/data/genre'
+    import type {GameDto} from '$lib/data/game'
+    import type {RegionDto} from '$lib/data/region'
+    import type {PlatformDto} from '$lib/data/platform'
     import {DateTime} from 'luxon'
 
     export let game: GameDto

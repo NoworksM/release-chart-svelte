@@ -2,7 +2,7 @@
     import type {PageData} from './$types'
     import '../../../styles/forms.pcss'
     import '../../../styles/buttons.pcss'
-    import { pathToPlatformIcon } from '$lib/data/dto/platform-dto';
+    import { pathToPlatformIcon } from '$lib/data/platform'
 
     export let data: PageData
 </script>

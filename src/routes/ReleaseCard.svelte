@@ -1,8 +1,8 @@
 <script lang="ts">
-    import type {RegionalReleaseDto} from '$lib/data/dto/regional-release-dto'
+    import type {RegionalReleaseDto} from '$lib/data/regional-release'
     import Chip from './Chip.svelte'
     import {DateTime} from 'luxon'
-    import {pathToPlatformIcon, type PlatformDto} from '$lib/data/dto/platform-dto'
+    import {pathToPlatformIcon, type PlatformDto} from '$lib/data/platform'
 
     export let release: RegionalReleaseDto
     export let platforms: PlatformDto[]

@@ -1,5 +1,5 @@
 import type {PageLoad, PageLoadEvent} from './$types'
-import type {RegionalReleaseDto} from '$lib/data/dto/regional-release-dto'
+import type {RegionalReleaseDto} from '$lib/data/regional-release'
 
 export const load = (async ({params, fetch, data}: PageLoadEvent) => {
     const [releases] = await Promise.all([

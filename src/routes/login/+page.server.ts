@@ -7,8 +7,7 @@ import type {Session} from '$lib/server/data/session'
 import {DBRef} from 'mongodb'
 import crypto from 'crypto'
 import {DateTime} from 'luxon'
-import redis, {sessionCacheKey, updateCachedSession} from '$lib/server/data/cache'
-import {getSessionHash} from '$lib/server/data/access/sessions'
+import {updateCachedSession} from '$lib/server/data/cache'
 import {env} from '$env/dynamic/private'
 
 const LoginSchema = z.object({

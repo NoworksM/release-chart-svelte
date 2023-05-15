@@ -1,5 +1,4 @@
 import type {Binary, ObjectId} from 'mongodb'
-import type {PlatformDto} from '../../data/dto/platform-dto'
 
 
 export default interface Platform {

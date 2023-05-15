@@ -2,7 +2,7 @@ import type {RegionalRelease} from '../regional-release'
 import {gamesCollection} from '..'
 import {DateTime} from 'luxon'
 import type {Document} from 'mongodb'
-import type {RegionalReleaseDto} from '../../../data/dto/regional-release-dto'
+import type {RegionalReleaseDto} from '$lib/data/regional-release'
 
 
 

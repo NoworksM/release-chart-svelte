@@ -1,12 +1,10 @@
-import type {PageServerLoad, RouteParams} from './$types'
-import {getPlatformsAsDto, getReleaseCountsForPlatforms} from '$lib/server/data/access/platforms'
-// eslint-disable-next-line no-duplicate-imports
-import type {PlatformCountMap} from '$lib/server/data/access/platforms'
-import type {PlatformDto} from '$lib/data/dto/platform-dto'
+import type {PageServerLoad} from './$types'
+import {getPlatformsAsDto, getReleaseCountsForPlatforms, type PlatformCountMap} from '$lib/server/data/access/platforms'
+import type {PlatformDto} from '$lib/data/platform'
 
 type PlatformsPageData = { platforms: PlatformDto[], releaseCounts: PlatformCountMap }
 
-export const load = (async ({params}: { params: RouteParams }): Promise<PlatformsPageData> => {
+export const load = (async (): Promise<PlatformsPageData> => {
     const platforms = await getPlatformsAsDto()
     const releaseCounts = await getReleaseCountsForPlatforms()
 

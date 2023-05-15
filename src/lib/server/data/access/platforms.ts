@@ -1,5 +1,5 @@
 import {gamesCollection, platformsCollection} from '..'
-import type {PlatformDto} from '../../../data/dto/platform-dto'
+import type {PlatformDto} from '$lib/data/platform'
 import type {ObjectId} from 'mongodb'
 
 

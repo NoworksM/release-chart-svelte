@@ -15,5 +15,5 @@ async function logout({cookies}: RequestEvent) {
 }
 
 export const actions = {
-    default: login
+    default: logout
 }

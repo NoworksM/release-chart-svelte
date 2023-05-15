@@ -1,8 +1,8 @@
 import type {ObjectId} from 'mongodb'
 import * as z from 'zod'
-import {Role} from '../../data/dto/roles'
+import {Role} from '$lib/data/roles'
 import {DateTime} from 'luxon'
-import { UserInfoDtoSchema } from '$lib/data/dto/user-info-dto'
+import { UserInfoDtoSchema } from '$lib/data/user'
 
 export interface UserInfo {
     _id: ObjectId
@@ -14,8 +14,6 @@ export interface UserInfo {
     createdAt?: Date
     updatedAt?: Date
 }
-
-
 export const UserInfoHashSchema = UserInfoDtoSchema
     .omit({createdAt: true, updatedAt: true, roles: true})
     .extend({

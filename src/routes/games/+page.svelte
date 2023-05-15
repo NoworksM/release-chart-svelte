@@ -3,7 +3,7 @@
     import '../../styles/forms.pcss'
     import PageSelector from '../PageSelector.svelte'
     import type {PageData} from './$types'
-    import type {GamePage} from '../../data/dto/game-dto'
+    import type {GamePage} from '$lib/data/game'
     import {writable} from 'svelte/store'
     import {browser} from '$app/environment'
 

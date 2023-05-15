@@ -1,6 +1,7 @@
 import {userInfoCollection} from '..'
 import type {ObjectId} from 'mongodb'
-import type {UserInfoDto} from '$lib/data/dto/user-info-dto'
+import type {UserInfoDto} from '$lib/data/user'
+import { aggregateFirst } from '.'
 
 
 /**
@@ -26,7 +27,7 @@ export function getUsers() {
  * @returns A Promise that resolves to the user's information object, or null if the user is not found.
  */
 export async function getUserInfoDto(id: ObjectId): Promise<UserInfoDto | null> {
-    const rows = await userInfoCollection.aggregate<UserInfoDto>([
+    return await aggregateFirst(userInfoCollection.aggregate<UserInfoDto>([
         {
             $match: {_id: id}
         },
@@ -40,12 +41,6 @@ export async function getUserInfoDto(id: ObjectId): Promise<UserInfoDto | null> 
                 updatedAt: {$toString: '$createdAt'}
             }
         }
-    ]).toArray()
-
-    if (rows.length > 0) {
-        return rows[0]
-    } else {
-        return null
-    }
+    ]))
 }
 

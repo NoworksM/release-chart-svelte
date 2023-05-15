@@ -1,6 +1,6 @@
 import {env} from '$env/dynamic/private'
 import {gamesCollection} from '..'
-import type {GameDto, GamePage} from '../../../data/dto/game-dto'
+import type {GameDto, GamePage} from '$lib/data/game'
 import type {ObjectId} from 'mongodb'
 
 
@@ -68,6 +68,17 @@ const mapToDtoStages = [
     {$unset: '_id'},
 ]
 
+interface GameSort {
+    title?: number
+    description?: number
+    imagePath?: number
+    developer?: number
+    publisher?: number
+    score?: number
+    updatedAt?: number
+    createdAt?: number
+}
+
 /**
  * Creates the stages for a paged game query.
  * The stages sort the games by the given sort order, skip the games on previous pages, limit the games on the current page,
@@ -77,7 +88,7 @@ const mapToDtoStages = [
  * @param sort Optional sort order.
  * @returns The stages for the query.
  */
-function createPaginationStages(page: number, sort: any = {updatedAt: -1, title: 1}) {
+function createPaginationStages(page: number, sort: GameSort = {updatedAt: -1, title: 1}) {
     return [
         {
             $facet: {

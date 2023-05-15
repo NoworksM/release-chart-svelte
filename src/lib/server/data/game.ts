@@ -1,6 +1,6 @@
 import type {Release} from './release'
 import type {ObjectId} from 'mongodb'
-import type {GameDto} from '../../data/dto/game-dto'
+import type {GameDto} from '$lib/data/game'
 // eslint-disable-next-line no-duplicate-imports
 import {releaseToDto} from './release'
 
@@ -24,7 +24,7 @@ export function gameToDto(game: Game): GameDto {
         id: game._id?.toString(),
         posterId: game.posterId?.toString(),
         releases: game.releases.map(releaseToDto),
-        createdAt: game.createdAt,
-        updatedAt: game.updatedAt
+        createdAt: game.createdAt?.toISOString(),
+        updatedAt: game.updatedAt?.toISOString()
     }
 }

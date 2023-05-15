@@ -1,5 +1,5 @@
 import * as z from 'zod'
-import {ReleaseDtoSchema} from './release-dto'
+import {ReleaseDtoSchema} from './release'
 import {createdPagedDtoSchema} from './paged'
 
 export const GameDtoSchema = z.object({

@@ -1,7 +1,7 @@
 import type {WithId} from 'mongodb'
 import type Genre from '../genre'
 import {genresCollection} from '..'
-import type {GenreDto} from '../../../data/dto/genre-dto'
+import type {GenreDto} from '$lib/data/genre'
 
 
 /**

@@ -4,10 +4,10 @@ import type {Game} from './game'
 import type Region from './region'
 import type Platform from './platform'
 import type Genre from './genre'
-import type UserInfo from './user-info'
-import type Session from './session'
+import type {UserInfo} from '$lib/server/data/user-info'
+import type {Session} from '$lib/server/data/session'
 
-const {client, db, mongoClientPromise} = initializeMongoDb()
+const {db, mongoClientPromise} = initializeMongoDb()
 
 const gamesCollection = db.collection<Game>('games')
 const regionsCollection = db.collection<Region>('regions')

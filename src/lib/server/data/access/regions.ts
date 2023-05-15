@@ -1,7 +1,7 @@
 import type {WithId} from 'mongodb'
 import type Region from '../region'
 import {regionsCollection} from '..'
-import type {RegionDto} from '../../../data/dto/region-dto'
+import type {RegionDto} from '$lib/data/region'
 
 
 
