@@ -3,15 +3,15 @@ import type {RequestEvent as UpdateRequestEvent} from './[id=objectid]/$types'
 // eslint-disable-next-line no-duplicate-imports
 import type {GridFSFile} from 'mongodb'
 import {ObjectId} from 'mongodb'
-import {gamesCollection, imagesBucket} from '../../data'
+import {gamesCollection, imagesBucket} from '$lib/server/data'
 import {fail, redirect} from '@sveltejs/kit'
 // eslint-disable-next-line no-duplicate-imports
-import {GameDtoSchema} from '../../data/dto/game-dto'
+import {GameDtoSchema} from '$lib/data/dto/game-dto'
 import * as z from 'zod'
 import {omit} from 'lodash'
-import type {Game} from '../../data/game'
+import type {Game} from '$lib/server/data/game'
 import {DateTime} from 'luxon'
-import type {ReleaseDto} from '../../data/dto/release-dto'
+import type {ReleaseDto} from '$lib/data/dto/release-dto'
 
 const winFakepathPrefix = 'C:\\fakepath\\'
 

@@ -1,7 +1,7 @@
 import type {PageServerLoad} from './$types'
-import {getUpcomingRegionalReleasesAsDto} from '../data/access/releases'
-import { getPlatformsAsDto } from '../data/access/platforms'
-import type ReleaseGridDto from '../data/dto/release-grid-dto'
+import {getUpcomingRegionalReleasesAsDto} from '$lib/server/data/access/releases'
+import { getPlatformsAsDto } from '$lib/server/data/access/platforms'
+import type ReleaseGridDto from '$lib/data/dto/release-grid-dto'
 
 export const load = (async (): Promise<ReleaseGridDto> => {
     const region = 'North America'

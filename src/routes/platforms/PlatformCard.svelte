@@ -1,6 +1,5 @@
 <script lang="ts">
-    import type {PlatformDto} from '../../data/dto/platform-dto.js'
-    import {pathToPlatformIcon} from '../../data/platform'
+    import {pathToPlatformIcon, type PlatformDto} from '$lib/data/dto/platform-dto'
 
     export let platform: PlatformDto
     export let releaseCount: number

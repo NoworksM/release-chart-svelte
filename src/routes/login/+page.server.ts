@@ -1,14 +1,14 @@
 import type {RequestEvent} from './$types'
 import * as z from 'zod'
-import {sessionCollection, userInfoCollection} from '../../data'
+import {sessionCollection, userInfoCollection} from '$lib/server/data'
 import {fail} from '@sveltejs/kit'
 import argon2 from 'argon2'
-import type {Session} from '../../data/session'
+import type {Session} from '$lib/server/data/session'
 import {DBRef} from 'mongodb'
 import crypto from 'crypto'
 import {DateTime} from 'luxon'
-import redis, {sessionCacheKey, updateCachedSession} from '../../data/cache'
-import {getSessionHash} from '../../data/access/sessions'
+import redis, {sessionCacheKey, updateCachedSession} from '$lib/server/data/cache'
+import {getSessionHash} from '$lib/server/data/access/sessions'
 import {env} from '$env/dynamic/private'
 
 const LoginSchema = z.object({

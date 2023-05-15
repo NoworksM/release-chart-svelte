@@ -1,7 +1,7 @@
 import type {RequestEvent, RequestHandler} from './$types'
 import {error, json} from '@sveltejs/kit'
 import * as z from 'zod'
-import {getGamesPage, searchGamesPage} from '../../../data/access/games'
+import {getGamesPage, searchGamesPage} from '$lib/server/data/access/games'
 
 const GetSearchParamsSchema = z.object({
     page: z.coerce.number().min(1).default(1),

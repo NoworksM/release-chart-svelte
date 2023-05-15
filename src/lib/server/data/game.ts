@@ -1,6 +1,6 @@
 import type {Release} from './release'
 import type {ObjectId} from 'mongodb'
-import type {GameDto} from './dto/game-dto'
+import type {GameDto} from '../../data/dto/game-dto'
 // eslint-disable-next-line no-duplicate-imports
 import {releaseToDto} from './release'
 

@@ -1,6 +1,6 @@
 import type {PageServerLoad} from './$types'
-import {getPlatformsAsDto} from '../../../data/access/platforms'
-import {getYearRangeForRegion} from '../../../data/access/games'
+import {getPlatformsAsDto} from '$lib/server/data/access/platforms'
+import {getYearRangeForRegion} from '$lib/server/data/access/games'
 
 export const load = (async () => {
     return {

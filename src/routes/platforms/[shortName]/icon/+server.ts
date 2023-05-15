@@ -1,6 +1,6 @@
 import {error} from '@sveltejs/kit'
 import type {RequestHandler} from './$types'
-import {platformsCollection} from '../../../../data'
+import {platformsCollection} from '$lib/server/data'
 
 export const GET = (async ({params}) => {
     const platform = await platformsCollection.findOne({name: params.shortName})

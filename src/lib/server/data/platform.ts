@@ -1,5 +1,5 @@
 import type {Binary, ObjectId} from 'mongodb'
-import type {PlatformDto} from './dto/platform-dto'
+import type {PlatformDto} from '../../data/dto/platform-dto'
 
 
 export default interface Platform {
@@ -14,12 +14,4 @@ export default interface Platform {
 export interface PlatformIcon {
     data: Binary
     contentType: string
-}
-
-export function pathToPlatformIcon(platform: Platform | PlatformDto, fallback: string | undefined = undefined) {
-    if (platform.hasIcon || !fallback) {
-        return `/img/platforms/${platform.shortName}.svg`
-    } else {
-        return fallback
-    }
 }

@@ -1,8 +1,8 @@
 import type {PageServerLoad, RouteParams} from './$types'
-import {getPlatformsAsDto, getReleaseCountsForPlatforms} from '../../data/access/platforms'
+import {getPlatformsAsDto, getReleaseCountsForPlatforms} from '$lib/server/data/access/platforms'
 // eslint-disable-next-line no-duplicate-imports
-import type {PlatformCountMap} from '../../data/access/platforms'
-import type {PlatformDto} from '../../data/dto/platform-dto'
+import type {PlatformCountMap} from '$lib/server/data/access/platforms'
+import type {PlatformDto} from '$lib/data/dto/platform-dto'
 
 type PlatformsPageData = { platforms: PlatformDto[], releaseCounts: PlatformCountMap }
 

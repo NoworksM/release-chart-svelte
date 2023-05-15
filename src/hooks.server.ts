@@ -1,8 +1,8 @@
 import type {Handle} from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 import {env} from '$env/dynamic/private'
-import {getSession, getSessionUser} from './data/cache'
-import {Role} from './data/roles'
+import {getSession, getSessionUser} from '$lib/server/data/cache'
+import {Role} from '$lib/data/dto/roles'
 
 const injectSessionAndUser = (async ({event, resolve}) => {
     const cookie = event.cookies.get(env.SESSION_COOKIE_NAME)

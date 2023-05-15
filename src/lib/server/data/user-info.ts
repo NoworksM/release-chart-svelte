@@ -1,7 +1,8 @@
 import type {ObjectId} from 'mongodb'
 import * as z from 'zod'
-import {Role} from './roles'
+import {Role} from '../../data/dto/roles'
 import {DateTime} from 'luxon'
+import { UserInfoDtoSchema } from '$lib/data/dto/user-info-dto'
 
 export interface UserInfo {
     _id: ObjectId
@@ -13,17 +14,6 @@ export interface UserInfo {
     createdAt?: Date
     updatedAt?: Date
 }
-
-export const UserInfoDtoSchema = z.object({
-    externalId: z.string(),
-    roles: z.array(Role),
-    name: z.string(),
-    email: z.string().email(),
-    createdAt: z.date().optional(),
-    updatedAt: z.date().optional()
-})
-
-export type UserInfoDto = z.infer<typeof UserInfoDtoSchema>
 
 
 export const UserInfoHashSchema = UserInfoDtoSchema

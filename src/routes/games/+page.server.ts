@@ -1,9 +1,9 @@
 import * as z from 'zod'
-import type {PageServerLoad} from '../../../.svelte-kit/types/src/routes/games/$types'
-import type {RouteParams} from '../../../.svelte-kit/types/src/routes/$types'
+import type {PageServerLoad} from './$types'
+import type {RouteParams} from './$types'
 import {error} from '@sveltejs/kit'
-import {getGamesPage, searchGamesPage} from '../../data/access/games'
-import type {GamePage} from '../../data/dto/game-dto'
+import {getGamesPage, searchGamesPage} from '$lib/server/data/access/games'
+import type {GamePage} from '$lib/data/dto/game-dto'
 
 const ParamsSchema = z.object({
     q: z.string().optional(),

@@ -1,6 +1,6 @@
 import * as z from 'zod'
 import {ObjectId} from 'mongodb'
-import type {RegionalRelease} from '../regional-release'
+import type {RegionalRelease} from '../../server/data/regional-release'
 
 export const RegionalReleaseDtoSchema = z.object({
     gameId: z.string().length(24),

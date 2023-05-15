@@ -1,11 +1,11 @@
 import type {ActionData, PageServerLoad, RequestEvent, RouteParams} from './$types'
-import {getPlatformAsDto} from '../../../data/access/platforms'
+import {getPlatformAsDto} from '$lib/server/data/access/platforms'
 import {error, fail} from '@sveltejs/kit'
 import {ObjectId} from 'mongodb'
-import type {PlatformDto} from '../../../data/dto/platform-dto'
+import type {PlatformDto} from '$lib/data/dto/platform-dto'
 // eslint-disable-next-line no-duplicate-imports
-import {PlatformDtoSchema} from '../../../data/dto/platform-dto'
-import {platformsCollection} from '../../../data'
+import {PlatformDtoSchema} from '$lib/data/dto/platform-dto'
+import {platformsCollection} from '$lib/server/data'
 import _ from 'lodash'
 const {omit} = _
 

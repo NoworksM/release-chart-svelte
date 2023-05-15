@@ -1,10 +1,12 @@
 import type {RegionalRelease} from '../regional-release'
-import {gamesCollection} from '../index'
+import {gamesCollection} from '..'
 import {DateTime} from 'luxon'
 import type {Document} from 'mongodb'
-import type {RegionalReleaseDto} from '../dto/regional-release-dto'
+import type {RegionalReleaseDto} from '../../../data/dto/regional-release-dto'
 
 
+
+// Define a projection object that specifies which fields to include in the results of the upcoming and recent releases queries
 const regionalReleaseProjection = {
     _id: 0,
     gameId: '$_id',
@@ -20,6 +22,7 @@ const regionalReleaseProjection = {
     posterId: 1
 }
 
+// Define a projection object that specifies which fields to include in the results of the upcoming and recent releases queries, but with the release date formatted as a string
 const regionalReleaseDtoProjection = {
     _id: 0,
     gameId: {$toString: '$_id'},
@@ -48,6 +51,7 @@ const regionalReleaseDtoProjection = {
 export async function getUpcomingRegionalReleases<T extends Document>(region: string, projection: object = regionalReleaseProjection): Promise<T[]> {
     const start = DateTime.now().endOf('day').toJSDate()
 
+    // Aggregate the games collection to get upcoming releases for the specified region
     return await gamesCollection.aggregate<T>([
         {
             $unwind: {path: '$releases'}
@@ -67,6 +71,7 @@ export async function getUpcomingRegionalReleases<T extends Document>(region: st
         .toArray()
 }
 
+// Define a function that returns upcoming releases as DTOs (data transfer objects)
 export const getUpcomingRegionalReleasesAsDto = (region: string) => getUpcomingRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
 
 /**
@@ -78,6 +83,7 @@ export const getUpcomingRegionalReleasesAsDto = (region: string) => getUpcomingR
 export async function getRecentRegionalReleases<T extends Document>(region: string, projection: object = regionalReleaseProjection): Promise<T[]> {
     const end = DateTime.now().endOf('day').toJSDate()
 
+    // Aggregate the games collection to get recent releases for the specified region
     return await gamesCollection.aggregate<T>([
         {
             $unwind: {path: '$releases'}
@@ -97,6 +103,7 @@ export async function getRecentRegionalReleases<T extends Document>(region: stri
         .toArray()
 }
 
+// Define a function that returns recent releases as DTOs (data transfer objects)
 export const getRecentRegionalReleasesAsDto = (region: string) => getRecentRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
 
 
@@ -113,6 +120,7 @@ export async function getRegionalReleasesForMonth(year: number, month: number, r
     const start = now.startOf('month').toJSDate()
     const end = now.endOf('month').toJSDate()
 
+    // Aggregate the games collection to get releases for the specified month and region
     return await gamesCollection.aggregate<RegionalRelease>([
         {
             $unwind: {path: '$releases'}

@@ -1,7 +1,7 @@
 import * as z from 'zod'
 import type {RequestEvent, RequestHandler} from './$types'
 import {json} from '@sveltejs/kit'
-import {getRegionalReleasesForMonth} from '../../../../../data/access/releases'
+import {getRegionalReleasesForMonth} from '$lib/server/data/access/releases'
 
 const ParamsSchema = z.object({
     year: z.coerce.number().min(1950),

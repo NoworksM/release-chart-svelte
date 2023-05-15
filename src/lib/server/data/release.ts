@@ -1,4 +1,4 @@
-import type {ReleaseDto} from './dto/release-dto'
+import type {ReleaseDto} from '../../data/dto/release-dto'
 
 export interface Release {
     releaseDate: Date

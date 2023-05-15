@@ -10,3 +10,11 @@ export const PlatformDtoSchema = z.object({
 })
 
 export type PlatformDto = z.infer<typeof PlatformDtoSchema>
+
+export function pathToPlatformIcon(platform: PlatformDto, fallback: string | undefined = undefined) {
+    if (platform.hasIcon || !fallback) {
+        return `/img/platforms/${platform.shortName}.svg`
+    } else {
+        return fallback
+    }
+}
