@@ -9,8 +9,8 @@ export async function getSessionHash(token: string) {
         {
             $project: {
                 token: 1,
-                expiresAt: 1,
-                userId: {$toString: '$user.oid'}
+                expiresAt: {$toString: '$expiresAt'},
+                userId: {$toString: '$user.$id'}
             }
         }
     ]).toArray()

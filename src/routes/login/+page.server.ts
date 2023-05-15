@@ -3,18 +3,20 @@ import * as z from 'zod'
 import {sessionCollection, userInfoCollection} from '../../data'
 import {fail} from '@sveltejs/kit'
 import argon2 from 'argon2'
-import type Session from '../../data/session'
+import type {Session} from '../../data/session'
 import {DBRef} from 'mongodb'
 import crypto from 'crypto'
 import {DateTime} from 'luxon'
-import redis, {sessionKey} from '../../data/cache'
+import redis, {sessionCacheKey, updateCachedSession} from '../../data/cache'
+import {getSessionHash} from '../../data/access/sessions'
+import {env} from '$env/dynamic/private'
 
 const LoginSchema = z.object({
     username: z.string(),
     password: z.string()
 })
 
-async function login({request}: RequestEvent) {
+async function login({request, cookies}: RequestEvent) {
     const formData = await request.formData()
 
     const result = await LoginSchema.safeParseAsync(Object.fromEntries(formData))
@@ -25,13 +27,15 @@ async function login({request}: RequestEvent) {
 
     const data = result.data
 
-    const user = await userInfoCollection.findOne({username: data.username})
+    const user = await userInfoCollection.findOne({name: data.username})
 
     if (!user) {
         return fail(400, {error: 'Invalid username and password'})
     }
 
-    if (!await argon2.verify(user.password, data.password)) {
+    const matches = await argon2.verify(user.password, data.password, {type: argon2.argon2id})
+
+    if (!matches) {
         return fail(400, {error: 'Invalid username and password'})
     }
 
@@ -47,15 +51,11 @@ async function login({request}: RequestEvent) {
 
     await sessionCollection.insertOne(session)
 
-    if (redis) {
-        const key = sessionKey(session)
+    await updateCachedSession(session)
 
-        await Promise.all([
-            redis!.hSet(key, 'userId', user._id.toString()),
-            redis!.hSet(key, 'roles', JSON.stringify(user.roles)),
-            redis!.expireAt(key, expiresAt)
-        ])
-    }
+    cookies.set(env.SESSION_COOKIE_NAME, session.token, {expires: session.expiresAt})
+
+    return Response.redirect(`${env.BASE_URL}/games`, 303)
 }
 
 export const actions = {

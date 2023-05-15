@@ -1,14 +1,19 @@
 import type {Handle} from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 import {env} from '$env/dynamic/private'
-import {getSessionUser} from './data/cache'
+import {getSession, getSessionUser} from './data/cache'
 import {Role} from './data/roles'
 
-const injectUser = (async ({event, resolve}) => {
+const injectSessionAndUser = (async ({event, resolve}) => {
     const cookie = event.cookies.get(env.SESSION_COOKIE_NAME)
 
     if (cookie) {
-        event.locals.user = await getSessionUser(cookie)
+        event.locals.session = await getSession(cookie)
+        if (event.locals.session) {
+            event.locals.user = await getSessionUser(event.locals.session.userId)
+        } else {
+            event.locals.user = null
+        }
     }
 
     return resolve(event)
@@ -21,10 +26,18 @@ const whitelistedRoutes = [
     /^\/\d{4}\/\d{2}\/?$/,
     /^\/games\/[a-fA-F0-9]{24}\/poster\/?$/,
     /^\/api\/games\/\d{4}\/\d{2}\/?$/,
-    /^\/login\/?/
+    /^\/login\/?$/
+]
+
+const blacklistedRoutes = [
+    /^\/login\/?$/
 ]
 
 const requireAdmin = (async ({event, resolve}) => {
+    if (event.locals.user && blacklistedRoutes.some(r => r.test(event.url.pathname))) {
+        return Response.redirect(`${env.BASE_URL}/`, 303)
+    }
+
     if (whitelistedRoutes.some(r => r.test(event.url.pathname))) {
         return resolve(event)
     }
@@ -36,4 +49,4 @@ const requireAdmin = (async ({event, resolve}) => {
     return resolve(event)
 }) satisfies Handle
 
-export const handle = sequence(injectUser, requireAdmin)
+export const handle = sequence(injectSessionAndUser, requireAdmin)
