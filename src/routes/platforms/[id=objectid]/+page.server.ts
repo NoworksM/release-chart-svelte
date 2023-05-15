@@ -34,9 +34,11 @@ async function savePlatform({ request, params }: RequestEvent) {
         return fail(400, {})
     }
 
-    await platformsCollection.updateOne({_id: new ObjectId(params.id)}, {
-        $set: omit(data, ['id'])
-    })
+    const update = {
+        $set: omit(result.data, ['id'])
+    }
+
+    await platformsCollection.updateOne({_id: new ObjectId(params.id)}, update)
 
     return {success: true}
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ReleaseCard from './ReleaseCard.svelte'
+    import ReleaseCard from '$lib/components/ReleaseCard.svelte'
     import type {RegionalReleaseDto} from '$lib/data/regional-release'
     import type {PlatformDto} from '$lib/data/platform'
 

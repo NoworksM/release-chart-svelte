@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {PageData} from './$types'
-    import PlatformCard from './PlatformCard.svelte'
+    import PlatformCard from '$lib/components/PlatformCard.svelte'
 
     export let data: PageData
 </script>

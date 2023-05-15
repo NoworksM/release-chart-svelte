@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {PageData} from './$types'
-    import ReleaseGrid from '../../ReleaseGrid.svelte'
+    import ReleaseGrid from '$lib/components/ReleaseGrid.svelte'
     import MonthPicker from './MonthPicker.svelte'
 
     export let data: PageData

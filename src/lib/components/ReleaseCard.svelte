@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {RegionalReleaseDto} from '$lib/data/regional-release'
-    import Chip from './Chip.svelte'
+    import Chip from '$lib/components/Chip.svelte'
     import {DateTime} from 'luxon'
     import {pathToPlatformIcon, type PlatformDto} from '$lib/data/platform'
 

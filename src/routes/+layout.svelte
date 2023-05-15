@@ -1,6 +1,6 @@
 <script lang="ts">
     import '../styles/app.pcss'
-    import NavBar from './NavBar.svelte'
+    import NavBar from '$lib/components/NavBar.svelte'
     import type {LayoutData} from './$types'
 
     export let data: LayoutData
