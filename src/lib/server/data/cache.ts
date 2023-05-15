@@ -115,6 +115,17 @@ export async function updateCachedSession(session: SessionHash | Session) {
     }
 }
 
+export async function deleteCachedSession(session: SessionHash | Session) {
+    if (!redis) {
+        return
+    }
+    try {
+        await redis.del(sessionCacheKey(session))
+    } catch {
+        // ignore
+    }
+}
+
 export async function getSession(cookie: string | undefined): Promise<SessionHash | null> {
     if (!cookie) {
         return null
