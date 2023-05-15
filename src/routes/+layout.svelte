@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
     import '../styles/app.pcss'
     import NavBar from './NavBar.svelte'
+    import type {LayoutData} from './$types'
+
+    export let data: LayoutData
 </script>
 
-<NavBar/>
+<NavBar user={data.user}/>
 <main>
     <slot/>
 </main>

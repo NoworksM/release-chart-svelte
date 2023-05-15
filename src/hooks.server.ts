@@ -26,7 +26,8 @@ const whitelistedRoutes = [
     /^\/\d{4}\/\d{2}\/?$/,
     /^\/games\/[a-fA-F0-9]{24}\/poster\/?$/,
     /^\/api\/games\/\d{4}\/\d{2}\/?$/,
-    /^\/login\/?$/
+    /^\/login\/?$/,
+    /^\/api\/users\/me\/?$/
 ]
 
 const blacklistedRoutes = [

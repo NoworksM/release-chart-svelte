@@ -1,13 +1,20 @@
 <script lang="ts">
-    import { page } from '$app/stores'
+    import {page} from '$app/stores'
     import {DateTime} from 'luxon'
+    import type {UserInfoHash} from '$lib/server/data/user-info'
+    import {Role} from '$lib/data/roles'
 
     const now = DateTime.now()
+
+    export let user: UserInfoHash | null
+
+    $: isAdmin = user?.roles && user.roles.indexOf(Role.enum.admin) !== -1
 
     $: path = $page.url.pathname
 </script>
 
 <nav class="desktop">
+
     <ul>
         <li><a href="/">ReleaseChart</a></li>
         <li><a href="/upcoming">Upcoming</a></li>
@@ -15,10 +22,19 @@
         <li><a href={now.toFormat('/yyyy/MM')}>This Month</a></li>
     </ul>
     <ul>
-        <li><a href="/platforms">Platforms</a></li>
-        <li><a href="/regions">Regions</a></li>
-        <li><a href="/genres">Genres</a></li>
-        <li><a href="/games">Games</a></li>
+        {#if isAdmin}
+            <li><a href="/platforms">Platforms</a></li>
+            <li><a href="/regions">Regions</a></li>
+            <li><a href="/genres">Genres</a></li>
+            <li><a href="/games">Games</a></li>
+        {/if}
+        {#if user}
+            <li>
+                <form action="/logout" method="post"><input type="submit" value="Logout"/></form>
+            </li>
+        {:else}
+            <li><a href="/login">Login</a></li>
+        {/if}
     </ul>
 </nav>
 <nav class="mobile">
@@ -56,7 +72,8 @@
         @apply mr-6;
     }
 
-    nav ul li a {
-        @apply hover:text-slate-800 hover:dark:text-slate-100;
+    nav ul li a,
+    nav ul li input[type=submit] {
+        @apply hover:text-slate-800 hover:dark:text-slate-100 cursor-pointer;
     }
 </style>
