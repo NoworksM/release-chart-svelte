@@ -126,8 +126,9 @@ export default async function upsertGame({request, params}: NewRequestEvent | Up
 
     if (id) {
         await gamesCollection.updateOne({_id: id}, {$set: data})
+        throw redirect(303, '/games')
     } else {
-        const inserted = await gamesCollection.insertOne(data)
-        throw redirect(303, `/games/${inserted.insertedId}`)
+        await gamesCollection.insertOne(data)
+        throw redirect(303, '/games')
     }
 }
