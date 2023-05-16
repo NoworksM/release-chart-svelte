@@ -1,6 +1,7 @@
 import {gamesCollection, platformsCollection} from '..'
 import type {PlatformDto} from '$lib/data/platform'
 import type {ObjectId} from 'mongodb'
+import type {PlatformCountMap} from '$lib/data/count-map'
 
 
 /**
@@ -44,8 +45,6 @@ export async function getPlatformAsDto(id: ObjectId): Promise<PlatformDto | unde
  * Gets the release counts for each platform in the database.
  * @returns A Promise of a PlatformCountMap object representing the release counts for each platform.
  */
-export type PlatformCountMap = {[platform: string]: number}
-
 export async function getReleaseCountsForPlatforms(): Promise<PlatformCountMap> {
     // Aggregate the games collection using the unwind, group, sort, and project stages and get the resulting data
     const counts = await gamesCollection.aggregate<{platform: string, count: number}>([

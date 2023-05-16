@@ -3,6 +3,7 @@ import {gamesCollection} from '..'
 import {DateTime} from 'luxon'
 import type {Document} from 'mongodb'
 import type {RegionalReleaseDto} from '$lib/data/regional-release'
+import type {Regions} from '$lib/data/region'
 
 
 
@@ -72,7 +73,7 @@ export async function getUpcomingRegionalReleases<T extends Document>(region: st
 }
 
 // Define a function that returns upcoming releases as DTOs (data transfer objects)
-export const getUpcomingRegionalReleasesAsDto = (region: string) => getUpcomingRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
+export const getUpcomingRegionalReleasesAsDto = (region: Regions) => getUpcomingRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
 
 /**
  * Get recent releases for a region
@@ -104,7 +105,7 @@ export async function getRecentRegionalReleases<T extends Document>(region: stri
 }
 
 // Define a function that returns recent releases as DTOs (data transfer objects)
-export const getRecentRegionalReleasesAsDto = (region: string) => getRecentRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
+export const getRecentRegionalReleasesAsDto = (region: Regions) => getRecentRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
 
 
 /**
@@ -114,7 +115,7 @@ export const getRecentRegionalReleasesAsDto = (region: string) => getRecentRegio
  * @param region The region to get releases for
  * @returns A list of releases for the specified month and region
  */
-export async function getRegionalReleasesForMonth(year: number, month: number, region: string) {
+export async function getRegionalReleasesForMonth(year: number, month: number, region: Regions) {
     const now = DateTime.fromObject({year, month})
 
     const start = now.startOf('month').toJSDate()

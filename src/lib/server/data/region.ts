@@ -5,4 +5,5 @@ export default interface Region {
     _id: ObjectId
     name: string
     shortName: string
+    iconUnicode: string
 }

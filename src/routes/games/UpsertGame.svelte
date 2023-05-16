@@ -127,7 +127,7 @@
                             <span>Regions</span>
                             <select name={`releases[${idx}].regions`} bind:value={release.regions} class="input" multiple>
                                 {#each regions as region (region.id)}
-                                    <option value={region.name}>{region.name}</option>
+                                    <option value={region.shortName}>{region.name}</option>
                                 {/each}
                             </select>
                         </label>
