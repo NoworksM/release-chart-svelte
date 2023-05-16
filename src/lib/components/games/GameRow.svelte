@@ -31,7 +31,7 @@
         <form action={`/games/${game.id}?/delete`} method="post" bind:this={deleteForm}></form>
         {#if deleting}
             <ConfirmModal on:cancel={cancelDelete} on:confirm={deleteGame}>
-                Are you sure you want to delete {game.title}?
+                Are you sure you want to delete {game.title}?<br/>This cannot be undone.
             </ConfirmModal>
         {/if}
     </td>
