@@ -77,28 +77,9 @@
 
         fileReader.readAsDataURL(file)
     }
-
-    // async function submitForm(event: SubmitEvent) {
-    //     const form = event.target as HTMLFormElement
-    //
-    //     const formData = new FormData(form)
-    //
-    //     if (uploadedFile) {
-    //         formData.set('poster', uploadedFile)
-    //     }
-    //
-    //     const res = await fetch(game.id ? `/games/${game.id}` : '/games/new', {
-    //         method: 'POST',
-    //         body: formData
-    //     })
-    //
-    //     if (res.ok) {
-    //         window.location.reload()
-    //     }
-    // }
 </script>
 
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" action="?/save">
     <div class="flex justify-center mt-6">
         <div class="flex flex-row">
             <div class="column">

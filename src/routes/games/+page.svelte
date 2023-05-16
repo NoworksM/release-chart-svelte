@@ -6,6 +6,7 @@
     import type {GamePage} from '$lib/data/game'
     import {writable} from 'svelte/store'
     import {browser} from '$app/environment'
+    import GameRow from '$lib/components/games/GameRow.svelte'
 
     let currentPage = writable(1)
     let query = writable('')
@@ -48,23 +49,9 @@
             </thead>
             <tbody>
                 {#each gamePage.data as game (game.id)}
-                    <tr class="h-12 border-b dark:border-slate-500">
-                        <td>{game.title}</td>
-                        <td>{game.developer}</td>
-                        <td>{game.publisher}</td>
-                        <td class="flex flex-row items-center">
-                            <span class="flex-1">{game.updatedAt}</span>
-                            <a href={`/games/${game.id}`} class="button warning">Edit</a>
-                        </td>
-                    </tr>
+                    <GameRow {game}/>
                 {/each}
             </tbody>
         </table>
     </div>
 </div>
-
-<style lang="postcss">
-    td {
-        @apply p-2;
-    }
-</style>
