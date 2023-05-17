@@ -26,6 +26,6 @@
         display: grid;
         grid-gap: 16px;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        grid-template-rows: repeat(auto-fill, 64px);
+        grid-template-rows: repeat(auto-fill, 80px);
     }
 </style>
