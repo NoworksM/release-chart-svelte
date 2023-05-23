@@ -7,6 +7,8 @@
     import type {RegionDto} from '$lib/data/region'
     import type {PlatformDto} from '$lib/data/platform'
     import {DateTime} from 'luxon'
+    import SaveFooter from '$lib/components/SaveFooter.svelte'
+    import {isEqual, cloneDeep} from 'lodash'
 
     export let game: GameDto
     export let regions: RegionDto[]
@@ -16,6 +18,17 @@
     let fileUpload: HTMLInputElement
     let fileReader: FileReader | undefined
     let uploadPreview: string | undefined
+
+    let dirty = false
+    let previous: GameDto | undefined
+
+    $: {
+        if (!previous) {
+            previous = cloneDeep(game)
+        }
+
+        dirty = !isEqual(previous, game)
+    }
 
     function addRelease() {
         game.releases = [...game.releases, {releaseDate: DateTime.now().toFormat('yyyy-MM-dd'), platforms: [], regions: []}]
@@ -161,12 +174,7 @@
             </div>
         </div>
     </div>
-    <div class="sticky-submit">
-        <div>
-            <p>Save pending changes?</p>
-            <input type="submit" value="Save" class="button info"/>
-        </div>
-    </div>
+    <SaveFooter show={dirty}/>
 </form>
 
 <style lang="postcss">
@@ -216,14 +224,6 @@
         img.placeholder {
             filter: brightness(0%) saturate(0%) invert(100%) sepia(28%) saturate(5131%) hue-rotate(179deg) brightness(109%) contrast(88%);
         }
-    }
-
-    .sticky-submit {
-        @apply fixed bottom-0 w-full;
-    }
-
-    .sticky-submit div {
-        @apply flex flex-row w-[900px] mx-auto justify-between items-center my-4 p-4 bg-slate-300 dark:bg-slate-700 rounded-md drop-shadow-md;
     }
 
     input[type=file] {

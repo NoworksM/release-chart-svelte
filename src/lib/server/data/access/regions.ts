@@ -1,8 +1,9 @@
-import type {WithId} from 'mongodb'
+import type {ObjectId, WithId} from 'mongodb'
 import type Region from '../region'
 import {gamesCollection, regionsCollection} from '..'
 import type {RegionDto} from '$lib/data/region'
 import type {RegionCountMap} from '$lib/data/count-map'
+import {aggregateFirst} from '$lib/server/data/access/index'
 
 /**
  * Returns all regions as an array of Region objects with MongoDB IDs.
@@ -33,6 +34,28 @@ export async function getRegionsAsDto(): Promise<RegionDto[]> {
             }
         }
     ]).toArray()
+}
+
+/**
+ * Returns all regions as an array of RegionDto objects.
+ * Regions are sorted by name in ascending order.
+ * @returns {Promise<RegionDto[]>} - An array of RegionDto objects.
+ */
+export async function getRegionAsDto(id: ObjectId): Promise<RegionDto | null> {
+    return await aggregateFirst(regionsCollection.aggregate<RegionDto>([
+        {
+            $match: {_id: id}
+        },
+        {
+            $project: {
+                _id: 0,
+                id: {$toString: '$_id'},
+                name: 1,
+                shortName: 1,
+                iconUnicode: 1
+            }
+        }
+    ]))
 }
 
 /**

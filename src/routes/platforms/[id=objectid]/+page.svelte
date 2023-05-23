@@ -2,9 +2,22 @@
     import type {PageData} from './$types'
     import '../../../styles/forms.pcss'
     import '../../../styles/buttons.pcss'
-    import { pathToPlatformIcon } from '$lib/data/platform'
+    import {pathToPlatformIcon, type PlatformDto} from '$lib/data/platform'
+    import SaveFooter from '$lib/components/SaveFooter.svelte'
+    import {cloneDeep, isEqual} from 'lodash'
 
     export let data: PageData
+
+    let dirty = false
+    let start: PlatformDto | undefined
+
+    $: {
+        if (!start) {
+            start = cloneDeep(data.platform)
+        }
+
+        dirty = !isEqual(start, data.platform)
+    }
 </script>
 
 <svelte:head>
@@ -34,9 +47,7 @@
             <img src="/img/platforms/placeholder.svg" alt="Logo"/>
         {/if}
     </div>
-    <div class="col-span-2 flex flex-row justify-end">
-        <input type="submit" value="Save" class="button primary"/>
-    </div>
+    <SaveFooter show={dirty}/>
 </form>
 
 <style lang="postcss">

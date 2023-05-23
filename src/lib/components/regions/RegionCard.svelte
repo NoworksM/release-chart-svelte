@@ -8,21 +8,24 @@
     export let counts: Promise<RegionCountMap>
 </script>
 
-<ImageCountCard title={region.name} subtext={region.shortName}>
-    <span slot="image" class="icon">{@html region.iconUnicode}</span>
-    <span slot="count">
+<a href={`/regions/${region.id}`}>
+    <ImageCountCard title={region.name} subtext={region.shortName} clickable={true}>
+        <span slot="image" class="icon">{@html region.iconUnicode}</span>
+        <span slot="count">
         {#await counts}
             <IndeterminateLoadingSpinner/>
         {:then regionCounts}
             {regionCounts[region.shortName]}
         {/await}
     </span>
-</ImageCountCard>
+    </ImageCountCard>
+</a>
 
 <style lang="postcss">
     @font-face {
         font-family: "Noto Emoji";
         src: url('$lib/assets/fonts/NotoEmoji-Regular.ttf') format("truetype");
+        font-display: swap;
     }
 
     .icon {
