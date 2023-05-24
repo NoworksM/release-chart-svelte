@@ -5,6 +5,8 @@
     import {pathToPlatformIcon, type PlatformDto} from '$lib/data/platform'
     import SaveFooter from '$lib/components/SaveFooter.svelte'
     import {cloneDeep, isEqual} from 'lodash'
+    import OutlinedTextField from '$lib/components/OutlinedTextField.svelte'
+    import Switch from '$lib/components/Switch.svelte'
 
     export let data: PageData
 
@@ -26,27 +28,17 @@
 </svelte:head>
 
 <form method="post">
-    <div class="info">
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" bind:value={data.platform.name} required/>
-        <label for="shortName">Short Name</label>
-        <input id="shortName" name="shortName" type="text" bind:value={data.platform.shortName} required/>
-        <label for="manufacturer">Manufacturer</label>
-        <input id="manufacturer" name="manufacturer" type="text" bind:value={data.platform.manufacturer} required/>
-        <label class="col-span-2">
-            Has Icon?
-            <input name="hasIcon" type="checkbox" bind:checked={data.platform.hasIcon}/>
-        </label>
-        <label for="priority">Priority</label>
-        <input id="priority" name="priority" type="number" min="0" bind:value={data.platform.priority}/>
-    </div>
-    <div class="column">
-        {#if data.platform.hasIcon}
-            <img src={pathToPlatformIcon(data.platform)} alt="Logo"/>
-        {:else}
-            <img src="/img/platforms/placeholder.svg" alt="Logo"/>
-        {/if}
-    </div>
+    <h1 class="text-4xl">Edit Platform</h1>
+    {#if data.platform.hasIcon}
+        <img src={pathToPlatformIcon(data.platform)} alt="Logo" class="col-span-2"/>
+    {:else}
+        <img src="/img/platforms/placeholder.svg" alt="Logo" class="col-span-2"/>
+    {/if}
+    <OutlinedTextField name="name" label="Name" bind:value={data.platform.name}/>
+    <OutlinedTextField name="shortName" label="Short Name" bind:value={data.platform.shortName}/>
+    <OutlinedTextField name="manufacturer" label="Manufacturer" bind:value={data.platform.manufacturer}/>
+    <Switch name="hasIcon" label="Has Icon" bind:value={data.platform.hasIcon}/>
+    <OutlinedTextField name="priority" label="Priority" bind:value={data.platform.priority} type="number" min={0}/>
     <SaveFooter show={dirty}/>
 </form>
 
@@ -75,16 +67,5 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr auto;
         @apply max-w-screen-lg mx-auto pt-16;
-    }
-
-    .info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(auto-fill, minmax(40px, 1fr));
-        align-items: baseline;
-    }
-
-    .info label {
-        @apply ml-auto mr-1;
     }
 </style>
