@@ -3,7 +3,7 @@
 
     export let label: string
     export let value: boolean
-    export let id: string
+    export let id: string | undefined
     export let name: string
 
     function check() {
