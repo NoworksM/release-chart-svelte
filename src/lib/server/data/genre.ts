@@ -1,3 +1,4 @@
 export default interface Genre {
-    name: string
+    name: string,
+    shortName: string
 }

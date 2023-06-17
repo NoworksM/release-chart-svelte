@@ -7,16 +7,24 @@
 
     export let name: string
 
-    export let error: string | undefined
+    export let error: string | undefined = undefined
+
+    let inputRef: HTMLInputElement | undefined = undefined
 
     function typeAction(node) {
         node.type = type
     }
+
+    function selectInput() {
+        if (inputRef) {
+            inputRef.focus()
+        }
+    }
 </script>
 
 <div class="relative">
-    <label for={id ?? name} class:error={error}>{label}</label>
-    <input id={id ?? name} {name} use:typeAction bind:value={value} class="mat-input" placeholder={label} class:error={error}>
+    <label for={id ?? name} class:error={error} on:click={selectInput} on:keypress={selectInput}>{label}</label>
+    <input id={id ?? name} {name} use:typeAction bind:value={value} class="mat-input" placeholder={label} class:error={error} bind:this={inputRef}>
     {#if error}
         <span class="error-message">{error}</span>
     {/if}
@@ -25,7 +33,7 @@
 <style lang="postcss">
     .mat-input {
         @apply border-2 border-solid border-slate-200 dark:border-slate-700 bg-transparent rounded-md;
-        @apply p-5 mx-2 my-5;
+        @apply px-5 py-2 mx-2 my-5;
         @apply hover:border-2 hover:border-solid;
         @apply active:border-2 active:border-solid;
         @apply focus:border-2 focus:border-solid;
@@ -44,6 +52,8 @@
         transition-property: top, left, font-size;
         transition: ease-in-out;
         transition-duration: 100ms;
+        user-select: none;
+        cursor: text;
     }
 
     label.error:has(+ input.mat-input) {
