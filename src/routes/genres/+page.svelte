@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {PageData} from './$types'
     import GenreCard from '$lib/components/genres/GenreCard.svelte'
+    import '../../styles/buttons.pcss'
 
     export let data: PageData
 </script>
@@ -9,6 +10,10 @@
     <title>RCAdmin: Genres</title>
     <meta name="description" content="Release Chart Genres"/>
 </svelte:head>
+
+<div class="flex flex-row justify-end px-4 pt-4">
+    <a class="button primary" href="/genres/new">New</a>
+</div>
 
 <div class="grid">
     {#each data.genres as genre (genre.id)}

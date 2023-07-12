@@ -4,13 +4,7 @@ import {ObjectId} from 'mongodb'
 import {genresCollection} from '$lib/server/data'
 import {GenreDtoSchema} from '$lib/data/genre'
 
-const action = async ({request, params}: RequestEvent) => {
-    const _id = new ObjectId(params.id)
-
-    if (await genresCollection.countDocuments({_id}) === 0) {
-        return fail(404, {message: 'Genre does not exist'})
-    }
-
+const action = async ({request}: RequestEvent) => {
     const formData = Object.fromEntries(await request.formData())
     const result = await GenreDtoSchema.safeParseAsync(formData)
 
@@ -18,8 +12,13 @@ const action = async ({request, params}: RequestEvent) => {
         return fail(400, {error: result.error})
     }
 
-    await genresCollection.updateOne({_id}, {
-        $set: result.data
+    if (await genresCollection.countDocuments({name: result.data.name}) > 0) {
+        return fail(404, {message: 'Genre already exists'})
+    }
+
+    await genresCollection.insertOne({
+        name: result.data.name,
+        shortName: result.data.shortName
     })
 }
 
