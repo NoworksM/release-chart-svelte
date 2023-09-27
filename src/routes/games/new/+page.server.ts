@@ -29,5 +29,5 @@ export const load = (async (): Promise<NewGamePageData> => {
 
 
 export const actions = {
-    default: upsertGame
+    save: upsertGame
 }

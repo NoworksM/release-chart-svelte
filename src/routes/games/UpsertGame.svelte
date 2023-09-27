@@ -6,6 +6,7 @@
     import type {GameDto} from '$lib/data/game'
     import type {RegionDto} from '$lib/data/region'
     import type {PlatformDto} from '$lib/data/platform'
+    import {enhance} from '$app/forms'
     import {DateTime} from 'luxon'
     import SaveFooter from '$lib/components/SaveFooter.svelte'
     import {isEqual, cloneDeep} from 'lodash'
@@ -90,9 +91,15 @@
 
         fileReader.readAsDataURL(file)
     }
+
+    function onFormSubmit() {
+        return async ({update}: {update: () => Promise<void>}) => {
+            await update()
+        }
+    }
 </script>
 
-<form method="POST" enctype="multipart/form-data" action="?/save">
+<form method="POST" enctype="multipart/form-data" action="?/save" use:enhance={onFormSubmit}>
     <div class="flex justify-center mt-6">
         <div class="flex flex-row">
             <div class="column">
