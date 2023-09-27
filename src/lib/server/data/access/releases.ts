@@ -1,7 +1,6 @@
 import type {RegionalRelease} from '../regional-release'
 import {gamesCollection} from '..'
 import {DateTime} from 'luxon'
-import type {Document} from 'mongodb'
 import type {RegionalReleaseDto} from '$lib/data/regional-release'
 import type {Regions} from '$lib/data/region'
 
@@ -22,91 +21,6 @@ const regionalReleaseProjection = {
     genres: 1,
     posterId: 1
 }
-
-// Define a projection object that specifies which fields to include in the results of the upcoming and recent releases queries, but with the release date formatted as a string
-const regionalReleaseDtoProjection = {
-    _id: 0,
-    gameId: {$toString: '$_id'},
-    title: 1,
-    description: 1,
-    imagePath: 1,
-    releaseDate: {
-        $dateToString: {
-            date: '$releases.releaseDate',
-            format: '%Y-%m-%d'
-        }
-    },
-    regions: '$releases.regions',
-    platforms: '$releases.platforms',
-    developer: 1,
-    publisher: 1,
-    genres: 1,
-}
-
-/**
- * Get upcoming releases for a region
- * @param region The region to get upcoming releases for
- * @param projection Optional projection to apply to the results
- * @returns A list of upcoming releases
- */
-export async function getUpcomingRegionalReleases<T extends Document>(region: string, projection: object = regionalReleaseProjection): Promise<T[]> {
-    const start = DateTime.now().endOf('day').toJSDate()
-
-    // Aggregate the games collection to get upcoming releases for the specified region
-    return await gamesCollection.aggregate<T>([
-        {
-            $unwind: {path: '$releases'}
-        },
-        {
-            $match: {
-                'releases.releaseDate': {$gte: start},
-                'releases.regions': {$in: [region]}
-            }
-        },
-        {
-            $project: projection
-        }
-    ])
-        .sort({releaseDate: 1})
-        .limit(50)
-        .toArray()
-}
-
-// Define a function that returns upcoming releases as DTOs (data transfer objects)
-export const getUpcomingRegionalReleasesAsDto = (region: Regions) => getUpcomingRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
-
-/**
- * Get recent releases for a region
- * @param region The region to get recent releases for
- * @param projection Optional projection to apply to the results
- * @returns A list of recent releases
- */
-export async function getRecentRegionalReleases<T extends Document>(region: string, projection: object = regionalReleaseProjection): Promise<T[]> {
-    const end = DateTime.now().endOf('day').toJSDate()
-
-    // Aggregate the games collection to get recent releases for the specified region
-    return await gamesCollection.aggregate<T>([
-        {
-            $unwind: {path: '$releases'}
-        },
-        {
-            $match: {
-                'releases.releaseDate': {$lte: end},
-                'releases.regions': {$in: [region]}
-            }
-        },
-        {
-            $project: projection
-        }
-    ])
-        .sort({releaseDate: -1})
-        .limit(100)
-        .toArray()
-}
-
-// Define a function that returns recent releases as DTOs (data transfer objects)
-export const getRecentRegionalReleasesAsDto = (region: Regions) => getRecentRegionalReleases<RegionalReleaseDto>(region, regionalReleaseDtoProjection)
-
 
 /**
  * Get releases for a region for a specific month
@@ -139,3 +53,149 @@ export async function getRegionalReleasesForMonth(year: number, month: number, r
         .sort({releaseDate: 1})
         .toArray()
 }
+
+/**
+ * Get upcoming releases for a region
+ * @param region The region to get upcoming releases for
+ * @returns A list of upcoming releases
+ */
+export async function getUpcomingRegionalReleases(region: Regions): Promise<RegionalReleaseDto[]> {
+    const start = DateTime.now().startOf('day').toJSDate()
+
+    return await gamesCollection.aggregate<RegionalReleaseDto>([
+        {
+            // Unwind the releases array to process each release individually
+            $unwind: '$releases'
+        },
+        {
+            // Filter out the releases that happened before today
+            $match: {
+                'releases.releaseDate': {
+                    $gte: start
+                },
+                'releases.regions': { $in: [region] }
+            }
+        },
+        {
+            // Group by the release date and game ID
+            $group: {
+                _id: {
+                    releaseDate: '$releases.releaseDate',
+                    gameId: '$_id'
+                },
+                title: { $first: '$title' },
+                platforms: { $addToSet: '$releases.platforms' }, // Collect unique platforms
+                description: { $first: '$description' },
+                developer: { $first: '$developer' },
+                genres: { $first: '$genres' },
+                posterId: { $first: '$posterId' },
+                publisher: { $first: '$publisher' },
+                createdAt: { $first: '$createdAt' },
+                updatedAt: { $first: '$updatedAt' }
+            }
+        },
+        {
+            // To flatten the platforms array (because of $addToSet, it'll be an array of arrays)
+            $project: {
+                _id: 0,
+                gameId: {$toString: '$_id.gameId'},
+                title: 1,
+                releaseDate: {
+                    $dateToString: {
+                        date: '$_id.releaseDate',
+                        format: '%Y-%m-%d'
+                    }
+                },
+                platforms: { $reduce: {
+                        input: '$platforms',
+                        initialValue: [],
+                        in: { $concatArrays: ['$$value', '$$this'] }
+                    }},
+                createdAt: 1,
+                description: 1,
+                developer: 1,
+                genres: 1,
+                publisher: 1,
+                updatedAt: 1
+            }
+        }
+    ])
+        .sort({releaseDate: 1})
+        .limit(100)
+        .toArray()
+}
+
+export const getUpcomingRegionalReleasesAsDto = (region: Regions) => getUpcomingRegionalReleases(region)
+
+/**
+ * Get recent releases for a region
+ * @param region The region to get recent releases for
+ * @returns A list of recent releases
+ */
+export async function getRecentRegionalReleases(region: Regions): Promise<RegionalReleaseDto[]> {
+    const end = DateTime.now().endOf('day').toJSDate()
+
+    return await gamesCollection.aggregate<RegionalReleaseDto>([
+        {
+            // Unwind the releases array to process each release individually
+            $unwind: '$releases'
+        },
+        {
+            // Filter out the releases that happened before today
+            $match: {
+                'releases.releaseDate': {
+                    $lte: end
+                },
+                'releases.regions': { $in: [region] }
+            }
+        },
+        {
+            // Group by the release date and game ID
+            $group: {
+                _id: {
+                    releaseDate: '$releases.releaseDate',
+                    gameId: '$_id'
+                },
+                title: { $first: '$title' },
+                platforms: { $addToSet: '$releases.platforms' }, // Collect unique platforms
+                description: { $first: '$description' },
+                developer: { $first: '$developer' },
+                genres: { $first: '$genres' },
+                posterId: { $first: '$posterId' },
+                publisher: { $first: '$publisher' },
+                createdAt: { $first: '$createdAt' },
+                updatedAt: { $first: '$updatedAt' }
+            }
+        },
+        {
+            // To flatten the platforms array (because of $addToSet, it'll be an array of arrays)
+            $project: {
+                _id: 0,
+                gameId: {$toString: '$_id.gameId'},
+                title: 1,
+                releaseDate: {
+                    $dateToString: {
+                        date: '$_id.releaseDate',
+                        format: '%Y-%m-%d'
+                    }
+                },
+                platforms: { $reduce: {
+                        input: '$platforms',
+                        initialValue: [],
+                        in: { $concatArrays: ['$$value', '$$this'] }
+                    }},
+                createdAt: 1,
+                description: 1,
+                developer: 1,
+                genres: 1,
+                publisher: 1,
+                updatedAt: 1
+            }
+        }
+    ])
+        .sort({releaseDate: -1})
+        .limit(100)
+        .toArray()
+}
+
+export const getRecentRegionalReleasesAsDto = (region: Regions) => getRecentRegionalReleases(region)
