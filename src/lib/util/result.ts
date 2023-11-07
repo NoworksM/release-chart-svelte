@@ -1,6 +1,6 @@
 export class Result<T, TError> {
-    private _value: T | undefined
-    private _error: TError | undefined
+    private readonly _value: T | undefined
+    private readonly _error: TError | undefined
 
     constructor(value: T | undefined, error: TError | undefined) {
         this._value = value
@@ -20,6 +20,7 @@ export class Result<T, TError> {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return ok(this._value!)
         } else {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             return err<U, TError>(this._error!)
         }
     }
