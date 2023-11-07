@@ -5,22 +5,54 @@ import type {RegionalReleaseDto} from '$lib/data/regional-release'
 import type {Regions} from '$lib/data/region'
 
 
-
-// Define a projection object that specifies which fields to include in the results of the upcoming and recent releases queries
-const regionalReleaseProjection = {
-    _id: 0,
-    gameId: '$_id',
-    title: 1,
-    description: 1,
-    imagePath: 1,
-    releaseDate: '$releases.releaseDate',
-    regions: '$releases.regions',
-    platforms: '$releases.platforms',
-    developer: 1,
-    publisher: 1,
-    genres: 1,
-    posterId: 1
-}
+/**
+ * Group by the release date and game ID
+ */
+const GroupByReleases = [
+    {
+        // Group by the release date and game ID
+        $group: {
+            _id: {
+                releaseDate: '$releases.releaseDate',
+                gameId: '$_id'
+            },
+            title: { $first: '$title' },
+            platforms: { $addToSet: '$releases.platforms' }, // Collect unique platforms
+            description: { $first: '$description' },
+            developer: { $first: '$developer' },
+            genres: { $first: '$genres' },
+            posterId: { $first: '$posterId' },
+            publisher: { $first: '$publisher' },
+            createdAt: { $first: '$createdAt' },
+            updatedAt: { $first: '$updatedAt' }
+        }
+    },
+    {
+        // To flatten the platforms array (because of $addToSet, it'll be an array of arrays)
+        $project: {
+            _id: 0,
+            gameId: {$toString: '$_id.gameId'},
+            title: 1,
+            releaseDate: {
+                $dateToString: {
+                    date: '$_id.releaseDate',
+                    format: '%Y-%m-%d'
+                }
+            },
+            platforms: { $reduce: {
+                    input: '$platforms',
+                    initialValue: [],
+                    in: { $concatArrays: ['$$value', '$$this'] }
+                }},
+            createdAt: 1,
+            description: 1,
+            developer: 1,
+            genres: 1,
+            publisher: 1,
+            updatedAt: 1
+        }
+    }
+]
 
 /**
  * Get releases for a region for a specific month
@@ -46,11 +78,9 @@ export async function getRegionalReleasesForMonth(year: number, month: number, r
                 'releases.regions': {$in: [region]}
             }
         },
-        {
-            $project: regionalReleaseProjection
-        }
+        ...GroupByReleases
     ])
-        .sort({releaseDate: 1})
+        .sort({releaseDate: 1, title: 1})
         .toArray()
 }
 
@@ -76,51 +106,9 @@ export async function getUpcomingRegionalReleases(region: Regions): Promise<Regi
                 'releases.regions': { $in: [region] }
             }
         },
-        {
-            // Group by the release date and game ID
-            $group: {
-                _id: {
-                    releaseDate: '$releases.releaseDate',
-                    gameId: '$_id'
-                },
-                title: { $first: '$title' },
-                platforms: { $addToSet: '$releases.platforms' }, // Collect unique platforms
-                description: { $first: '$description' },
-                developer: { $first: '$developer' },
-                genres: { $first: '$genres' },
-                posterId: { $first: '$posterId' },
-                publisher: { $first: '$publisher' },
-                createdAt: { $first: '$createdAt' },
-                updatedAt: { $first: '$updatedAt' }
-            }
-        },
-        {
-            // To flatten the platforms array (because of $addToSet, it'll be an array of arrays)
-            $project: {
-                _id: 0,
-                gameId: {$toString: '$_id.gameId'},
-                title: 1,
-                releaseDate: {
-                    $dateToString: {
-                        date: '$_id.releaseDate',
-                        format: '%Y-%m-%d'
-                    }
-                },
-                platforms: { $reduce: {
-                        input: '$platforms',
-                        initialValue: [],
-                        in: { $concatArrays: ['$$value', '$$this'] }
-                    }},
-                createdAt: 1,
-                description: 1,
-                developer: 1,
-                genres: 1,
-                publisher: 1,
-                updatedAt: 1
-            }
-        }
+        ...GroupByReleases
     ])
-        .sort({releaseDate: 1})
+        .sort({releaseDate: 1, title: 1})
         .limit(100)
         .toArray()
 }
@@ -149,51 +137,9 @@ export async function getRecentRegionalReleases(region: Regions): Promise<Region
                 'releases.regions': { $in: [region] }
             }
         },
-        {
-            // Group by the release date and game ID
-            $group: {
-                _id: {
-                    releaseDate: '$releases.releaseDate',
-                    gameId: '$_id'
-                },
-                title: { $first: '$title' },
-                platforms: { $addToSet: '$releases.platforms' }, // Collect unique platforms
-                description: { $first: '$description' },
-                developer: { $first: '$developer' },
-                genres: { $first: '$genres' },
-                posterId: { $first: '$posterId' },
-                publisher: { $first: '$publisher' },
-                createdAt: { $first: '$createdAt' },
-                updatedAt: { $first: '$updatedAt' }
-            }
-        },
-        {
-            // To flatten the platforms array (because of $addToSet, it'll be an array of arrays)
-            $project: {
-                _id: 0,
-                gameId: {$toString: '$_id.gameId'},
-                title: 1,
-                releaseDate: {
-                    $dateToString: {
-                        date: '$_id.releaseDate',
-                        format: '%Y-%m-%d'
-                    }
-                },
-                platforms: { $reduce: {
-                        input: '$platforms',
-                        initialValue: [],
-                        in: { $concatArrays: ['$$value', '$$this'] }
-                    }},
-                createdAt: 1,
-                description: 1,
-                developer: 1,
-                genres: 1,
-                publisher: 1,
-                updatedAt: 1
-            }
-        }
+        ...GroupByReleases
     ])
-        .sort({releaseDate: -1})
+        .sort({releaseDate: -1, title: 1})
         .limit(100)
         .toArray()
 }
