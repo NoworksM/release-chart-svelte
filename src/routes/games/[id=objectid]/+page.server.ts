@@ -9,9 +9,8 @@ import type {PlatformDto} from '$lib/data/platform'
 import type {GenreDto} from '$lib/data/genre'
 import type {PageServerLoad, RouteParams} from './$types'
 import upsertGame from '../UpsertGame.server'
-import type {RequestEvent} from '@sveltejs/kit'
+import {type RequestEvent, fail, redirect} from '@sveltejs/kit'
 import {gamesCollection} from '$lib/server/data'
-import {fail, redirect} from '@sveltejs/kit'
 import {env} from '$env/dynamic/private'
 
 interface EditGamePageData {

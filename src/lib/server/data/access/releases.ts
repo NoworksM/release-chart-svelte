@@ -3,6 +3,8 @@ import {gamesCollection} from '..'
 import {DateTime} from 'luxon'
 import type {RegionalReleaseDto} from '$lib/data/regional-release'
 import type {Regions} from '$lib/data/region'
+import type {ObjectId} from 'mongodb'
+import {type Option, some, none} from '$lib/util/option'
 
 
 /**
@@ -145,3 +147,28 @@ export async function getRecentRegionalReleases(region: Regions): Promise<Region
 }
 
 export const getRecentRegionalReleasesAsDto = (region: Regions) => getRecentRegionalReleases(region)
+
+export async function getReleaseForRegion(id: ObjectId, region: Regions): Promise<Option<RegionalRelease>> {
+    const games = await gamesCollection.aggregate<RegionalRelease>([
+        {
+            $match: {
+                _id: id
+            }
+        },
+        {
+            $unwind: '$releases'
+        },
+        {
+            $match: {
+                'releases.regions': {$in: [region]}
+            }
+        },
+        ...GroupByReleases
+    ]).toArray()
+
+    if (games.length === 0) {
+        return none<RegionalRelease>()
+    }
+
+    return some(games[0])
+}

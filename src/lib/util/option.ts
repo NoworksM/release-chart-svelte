@@ -13,6 +13,15 @@ export class Option<T> {
         return this._value === undefined
     }
 
+    public get value(): T {
+        if (this.isSome) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            return this._value!
+        } else {
+            throw new Error('Option is none')
+        }
+    }
+
     public bind<U>(some: (value: T) => Option<U>): Option<U> {
         if (this.isSome) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
